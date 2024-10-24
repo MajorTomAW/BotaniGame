@@ -1,0 +1,43 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "AI Core",
+	"Description": "",
+	"Category": "Game Features",
+	"CreatedBy": "MajorT",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": false,
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"ExplicitlyLoaded": true,
+	"BuiltInInitialFeatureState": "Registered",
+	"EditorCustomVirtualPath": "GameFeatures/Bots",
+	"Plugins": [
+		{
+			"Name": "BioWeapons",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevices",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_PlayerStart",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_AISpawner",
+			"Enabled": true
+		},
+		{
+			"Name": "SebastianJunior",
+			"Enabled": true
+		}
+	]
+}

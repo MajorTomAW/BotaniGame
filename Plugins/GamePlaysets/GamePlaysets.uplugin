@@ -1,0 +1,34 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.1.0",
+	"FriendlyName": "Game Playsets",
+	"Description": "Adds a system for creating and managing playsets, which are collections of actors that can be used to define gameplay rules, objectives, and more.",
+	"Category": "Gameplay",
+	"CreatedBy": "MajorT",
+	"CreatedByURL": "",
+	"SupportURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": true,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "GamePlaysets",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"CoreUObject",
+				"GameplayTags"
+			]
+		},
+		{
+			"Name": "GamePlaysetsEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	],
+	"EditorCustomVirtualPath": "Editor"
+}

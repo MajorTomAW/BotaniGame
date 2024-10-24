@@ -1,0 +1,47 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Bio Tools",
+	"Description": "Some basic Tools for the Alpha of this game.",
+	"Category": "Game Features",
+	"CreatedBy": "MajorT",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": false,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"ExplicitlyLoaded": true,
+	"BuiltInInitialFeatureState": "Registered",
+	"EditorCustomVirtualPath": "GameFeatures/BioGame/Items",
+	"Plugins": [
+		{
+			"Name": "GamePlaysets",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayInventorySystem",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "BioCore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioFrontend",
+			"Enabled": true
+		},
+		{
+			"Name": "InventoryCore",
+			"Enabled": true
+		}
+	]
+}

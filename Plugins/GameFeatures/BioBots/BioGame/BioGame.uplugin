@@ -1,0 +1,63 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Bio Game",
+	"Description": "Game Files for the actual BioGame.,",
+	"Category": "Game Features",
+	"CreatedBy": "MajorT",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": false,
+	"EditorCustomVirtualPath": "GameFeatures/BioGame",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"ExplicitlyLoaded": true,
+	"BuiltInInitialFeatureState": "Registered",
+	"Plugins": [
+		{
+			"Name": "BioDevices",
+			"Enabled": true
+		},
+		{
+			"Name": "BioCore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioWeapons",
+			"Enabled": true
+		},
+		{
+			"Name": "BioFrontend",
+			"Enabled": true
+		},
+		{
+			"Name": "AICore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_PlayerStart",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_AISpawner",
+			"Enabled": true
+		},
+		{
+			"Name": "InventoryCore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioTools",
+			"Enabled": true
+		},
+		{
+			"Name": "InteractionCore",
+			"Enabled": true
+		}
+	]
+}

@@ -1,0 +1,34 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Inventory Core",
+	"Description": "",
+	"Category": "Game Features",
+	"CreatedBy": "MajorT",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": false,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"ExplicitlyLoaded": true,
+	"BuiltInInitialFeatureState": "Registered",
+	"EditorCustomVirtualPath": "GameFeatures/Inventory",
+	"Plugins": [
+		{
+			"Name": "BioFrontend",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "InventoryCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

@@ -1,0 +1,27 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "CBD PlayerStart",
+	"Description": "A Bio Device used for Player and Bot spawning.",
+	"Category": "Game Features",
+	"CreatedBy": "MajorT",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": false,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"ExplicitlyLoaded": true,
+	"BuiltInInitialFeatureState": "Registered",
+	"EditorCustomVirtualPath": "GameFeatures/BioGame/Devices",
+	"Plugins": [
+		{
+			"Name": "BioDevices",
+			"Enabled": true
+		}
+	]
+}

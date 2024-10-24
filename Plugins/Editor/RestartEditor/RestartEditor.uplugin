@@ -1,0 +1,30 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.2",
+	"FriendlyName": "Restart Editor (Botanibots)",
+	"Description": "Utility to restart the Unreal Editor with a click or with a keyboard shortcut (The default shortcut is CTRL+SHIFT+R but you can change it in Editor Settings)",
+	"Category": "Editor",
+	"CreatedBy": "Ares9323, MajorT, Botanibots",
+	"CreatedByURL": "https://dev.epicgames.com/community/profile/k7ba/Ares9323",
+	"DocsURL": "https://github.com/Ares9323/Restart-Unreal-Engine-Editor-Plugin",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/a00eb1e478ae4a8fb655aa22f9125b07",
+	"SupportURL": "",
+	"EngineVersion": "5.4.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "RestartEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64",
+				"Mac",
+				"Linux"
+			]
+		}
+	],
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false
+}
