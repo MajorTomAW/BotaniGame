@@ -83,6 +83,7 @@ public:
 	//~ End UGameplayInventorySystemFragment Interface
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Fragment|Equipment")
+	/** Tries to find the equipment spec that lives inside the equipment manager from the given context. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Fragment|Equipment")
 	static FGameplayEquipmentSpec& GetEquipmentSpecFromHandle(const FGameplayInventoryItemSpecHandle& Handle, const FGameplayInventoryItemContext& Context);
 };

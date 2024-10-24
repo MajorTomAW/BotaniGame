@@ -7,14 +7,16 @@
 #include "GameFramework/HUD.h"
 #include "GameplayInventoryManager.generated.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FInventoryManagerChangedSignature, const FGameplayInventoryItemSpecHandle& ItemHandle);
+class UGameplayInventoryRowConfig;
+DECLARE_MULTICAST_DELEGATE_OneParam(FInventoryManagerChangedSignature,
+                                    const FGameplayInventoryItemSpecHandle& ItemHandle);
 
 /**
  * UGameplayInventoryManager
  *
  * An inventory manager that can be used to manage the inventory of a player or other entity.
  */
-UCLASS(BlueprintType, meta = (BlueprintSpawnableComponent))
+UCLASS(BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent))
 class GAMEPLAYINVENTORYSYSTEM_API UGameplayInventoryManager : public UGameplayInventoryComponent
 {
 	GENERATED_UCLASS_BODY()
@@ -38,7 +40,12 @@ public:
 	 * @param Context		Context for the item.
 	 * @return					True if the item can be added
 	 */
-	bool CanAddItemDef(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context);
+	virtual bool CanAddItemDef(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context);
+	virtual bool CanAddItemFullyToExisting(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, FGameplayInventoryItemSpec& ExistingSpec);
+
+	virtual bool CanAddItemToRow(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, const UGameplayInventoryRowConfig* RowConfig);
+
+	virtual UGameplayInventoryRowConfig* FindRowConfig(const FGameplayInventoryItemSpec& ItemSpec);
 
 	/**
 	 * Gives an item to the inventory.
@@ -150,13 +157,18 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory")
 	TArray<FGameplayInventoryItemSpecHandle> GetInventoryList() const;
 
+	/** Returns all existing item specs in this inventory. */
+	TArray<FGameplayInventoryItemSpec>& GetItemSpecs();
+	const TArray<FGameplayInventoryItemSpec>& GetItemSpecs() const;
+	const TArray<FGameplayInventoryItemSpec> GetItemSpecsInRow(const FGameplayTag& RowTag) const;
+
 	/** Returns the total count of all items in the inventory of the given type. */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory")
 	int32 GetTotalItemCountByDefinition(UGameplayInventoryItemDefinition* InItemDef) const;
 
 	/** Creates and returns a new item context */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory", meta = (DefaultToSelf = "Instigator"))
-	FGameplayInventoryItemContext MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, int32 StackCount = 1, AActor* Instigator = nullptr, FGameplayTagContainer ContextTags = FGameplayTagContainer());
+	FGameplayInventoryItemContext MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, int32 StackCount = -1, AActor* Instigator = nullptr, FGameplayTagContainer ContextTags = FGameplayTagContainer());
 
 	/**
 	 * Returns an inventory item spec from a handle.
@@ -202,6 +214,11 @@ protected:
 
 	/** Broadcasts an inventory change message */
 	virtual void BroadcastInventoryChangeMessage(UGameplayInventoryItemInstance* ItemInstance, int32 OldStackCount, int32 NewStackCount);
+
+protected:
+	/** The initial inventory row config. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
+	TArray<TObjectPtr<class UGameplayInventoryRowConfig>> RowConfigs;
 	
 protected:
 	/** Called when the inventory list is replicated */

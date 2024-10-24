@@ -30,12 +30,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item|Properties", meta = (DeterminesOutputType = "FragmentClass"))
 	UGameplayInventoryItemFragment* GetItemFragment(TSubclassOf<UGameplayInventoryItemFragment> FragmentClass) const;
 
+	/** Tries to return the equipment definition of the specified type. */
+	UFUNCTION(BlueprintCallable, Category = "Item|Equipment", meta = (DeterminesOutputType = "EquipmentClass"))
+	UGameplayEquipmentDefinition* GetEquipmentDefinition(TSubclassOf<class UGameplayEquipmentDefinition> EquipmentClass) const;
+
+	/** Returns the stacking data for this item. */
+	UFUNCTION(BlueprintCallable, Category = "Item|Properties")
+	void GetStackingData(bool& bCanStack, int32& MaxStackSize) const;
+
+	/** Returns an item fragment of the specified type. */
 	template <typename T>
 	T* GetItemFragment() const
 	{
 		return Cast<T>(GetItemFragment(T::StaticClass()));
 	}
 
+	/** Returns the equipment definition of a specific type (if found). */
+	template <typename T>
+	T* GetEquipmentDefinition() const
+	{
+		return Cast<T>(EquipmentDefinition);
+	}
 
 public:
 	/******************************************************************************************************
@@ -43,7 +58,7 @@ public:
 	 ******************************************************************************************************/
 
 	/** The stacking data for this item */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item|Properties")
+	UPROPERTY(EditAnywhere, Category = "Item|Properties")
 	FGameplayInventoryItemStackingData StackingData;
 
 	/** A list of additional requirements that must be met to use the item. */

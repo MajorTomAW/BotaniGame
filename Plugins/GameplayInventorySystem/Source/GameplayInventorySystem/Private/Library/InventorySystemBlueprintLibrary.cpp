@@ -161,7 +161,7 @@ FString UInventorySystemBlueprintLibrary::Conv_ItemHandleToString(FGameplayInven
 	return Handle.ToString();
 }
 
-FGameplayInventoryItemContext UInventorySystemBlueprintLibrary::CreateItemContext(UGameplayInventoryComponent* OwnerComponent, UObject* Instigator, FGameplayTagContainer Tags)
+/*FGameplayInventoryItemContext UInventorySystemBlueprintLibrary::CreateItemContext(UGameplayInventoryComponent* OwnerComponent, UObject* Instigator, FGameplayTagContainer Tags)
 {
 	FGameplayInventoryItemContext NewContext;
 	NewContext.InventoryComponent = OwnerComponent;
@@ -204,7 +204,7 @@ FGameplayInventoryItemContext UInventorySystemBlueprintLibrary::CreateItemContex
 	NewContext.StackCount = StackCount;
 
 	return NewContext;
-}
+}*/
 
 void UInventorySystemBlueprintLibrary::DropItemByHandle(UGameplayInventoryManager* InventoryManager, const FGameplayInventoryItemSpecHandle& ItemHandle, const int32 DropCount, const FTransform& DropTransform)
 {

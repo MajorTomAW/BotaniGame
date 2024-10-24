@@ -11,6 +11,7 @@
 #include "Library/InventorySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Requirements/GameplayInventoryRequirement.h"
+#include "Rows/GameplayInventoryRowConfig.h"
 
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameplayInventoryManager)
@@ -91,8 +92,6 @@ void UGameplayInventoryManager::BeginPlay()
 
 bool UGameplayInventoryManager::CanAddItemDef(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context)
 {
-	bool bCanAdd = true;
-
 	UGameplayInventoryItemDefinition* ItemDef = ItemSpec.Item;
 	if (!IsValid(ItemDef))
 	{
@@ -100,6 +99,8 @@ bool UGameplayInventoryManager::CanAddItemDef(const FGameplayInventoryItemSpec& 
 		return false;
 	}
 
+
+	// Check requirements
 	for (UGameplayInventoryRequirement* Requirement : ItemDef->ItemRequirements)
 	{
 		if (Requirement == nullptr)
@@ -110,11 +111,97 @@ bool UGameplayInventoryManager::CanAddItemDef(const FGameplayInventoryItemSpec& 
 		
 		if (!Requirement->CanInventoryItemPerformAction(ItemSpec, Context))
 		{
-			bCanAdd = false;
+			return false;
 		}
 	}
 
-	return bCanAdd;
+	// Check for rows
+	if (const UGameplayInventoryRowConfig* RowConfig = FindRowConfig(ItemSpec))
+	{
+		if (!CanAddItemToRow(ItemSpec, Context, RowConfig))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool UGameplayInventoryManager::CanAddItemFullyToExisting(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, FGameplayInventoryItemSpec& ExistingSpec)
+{
+	return false;
+}
+
+bool UGameplayInventoryManager::CanAddItemToRow(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, const UGameplayInventoryRowConfig* RowConfig)
+{
+	if (RowConfig == nullptr)
+	{
+		return true;
+	}
+
+	switch (RowConfig->Limits) {
+	case EGameplayInventoryLimits::NoLimit:
+		{
+			return true;
+		}
+	case EGameplayInventoryLimits::ItemLimit:
+		{
+			int32 ExistingStackCount = Context.StackCount;
+			const TArray<FGameplayInventoryItemSpec> Specs = GetItemSpecsInRow(RowConfig->RowTag);
+			for (const auto& Item : Specs)
+			{
+				ExistingStackCount += Item.GetStackCount();
+			}
+
+			if (ExistingStackCount > RowConfig->MaxItemCount)
+			{
+				return false;
+			}
+		}
+	case EGameplayInventoryLimits::SlotLimit:
+		{
+			const int32 NumSpecs = GetItemSpecsInRow(RowConfig->RowTag).Num();
+
+			FGameplayInventoryItemSpec Existing;
+			if (ItemSpec.GetItemDefinition()->StackingData.bCanStack && CanAddItemFullyToExisting(ItemSpec, Context, Existing))
+			{
+				return true;
+			}
+
+			LOG_INVENTORY(Warning, TEXT("Final size: %d, Max Size: %d"), (NumSpecs + 1), RowConfig->MaxSlotCount);
+
+			if ((NumSpecs + 1) > RowConfig->MaxSlotCount)
+			{
+				return false;
+			}
+
+			return true;
+		}
+	case EGameplayInventoryLimits::WeightLimit:
+		{
+			//@TODO: Weight currently not supported
+		}
+	}
+	
+	return true;
+}
+
+UGameplayInventoryRowConfig* UGameplayInventoryManager::FindRowConfig(const FGameplayInventoryItemSpec& ItemSpec)
+{
+	UGameplayInventoryRowConfig* RowConfig = nullptr;
+
+	for (UGameplayInventoryRowConfig* Config : RowConfigs)
+	{
+		if (!Config->DoesSpecMatch(ItemSpec))
+		{
+			continue;
+		}
+
+		RowConfig = Config;
+		break;
+	}
+
+	return RowConfig;
 }
 
 FGameplayInventoryItemSpecHandle UGameplayInventoryManager::GiveItem(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context)
@@ -148,34 +235,43 @@ FGameplayInventoryItemSpecHandle UGameplayInventoryManager::GiveItem(const FGame
 	int32 ItemSpecIndex = INDEX_NONE;
 
 	// Try to fill existing stacks first
-	for (FGameplayInventoryItemSpec& Spec : InventoryList.Items)
+	if (ItemSpec.GetItemDefinition()->StackingData.bCanStack)
 	{
-		// If we have no more stacks left to add, break
-		if (StacksToAdd <= 0)
+		for (FGameplayInventoryItemSpec& Spec : InventoryList.Items)
 		{
-			break;
-		}
+			// If we have no more stacks left to add, break
+			if (StacksToAdd <= 0)
+			{
+				break;
+			}
 
-		// If the item definition doesn't match, skip
-		if (Spec.Item != ItemDef)
-		{
-			continue;
-		}
+			// If the item definition doesn't stack, skip
+			if (!Spec.Item->StackingData.bCanStack)
+			{
+				continue;
+			}
 
-		// If the stack is full, skip
-		if (Spec.IsStackFull())
-		{
-			continue;
-		}
+			// If the item definition doesn't match, skip
+			if (Spec.Item != ItemDef)
+			{
+				continue;
+			}
 
-		const int32 Delta = FMath::Min(StacksToAdd, Spec.GetMaxStackCount() - Spec.GetStackCount());
-		Spec.StackCount += Delta;
+			// If the stack is full, skip
+			if (Spec.IsStackFull())
+			{
+				continue;
+			}
 
-		StacksToAdd -= Delta;
-		ItemSpecIndex = InventoryList.Items.Find(Spec);
+			const int32 Delta = FMath::Min(StacksToAdd, Spec.GetMaxStackCount() - Spec.GetStackCount());
+			Spec.StackCount += Delta;
 
-		OnChangeItem(Spec);
-		MarkInventoryItemSpecDirty(Spec);
+			StacksToAdd -= Delta;
+			ItemSpecIndex = InventoryList.Items.Find(Spec);
+
+			OnChangeItem(Spec);
+			MarkInventoryItemSpecDirty(Spec);
+		}	
 	}
 
 	// If we still have stacks to add, create new specs
@@ -186,6 +282,12 @@ FGameplayInventoryItemSpecHandle UGameplayInventoryManager::GiveItem(const FGame
 
 		const FGameplayInventoryItemSpec TempSpec(ItemDef, Delta, GetOwner());
 		FGameplayInventoryItemSpec& NewSpec = InventoryList.Items.Add_GetRef(TempSpec);
+
+		// Assign the row tag if it exists
+		if (auto* Config = FindRowConfig(NewSpec))
+		{
+			NewSpec.RowTag = Config->RowTag;
+		}
 
 		if (ShouldCreateNewInstanceOfItem(ItemSpec))
 		{
@@ -233,16 +335,13 @@ void UGameplayInventoryManager::ConsumeItem(const FGameplayInventoryItemContext&
 		LOG_INVENTORY(Warning, TEXT("ConsumeItem called on client, ignoring"));
 		return;
 	}
-
-	FGameplayInventoryItemContext ContextCopy = Context;
-	ContextCopy.StackCount = Context.StackCount;
 	
 	auto Predicate = [Context] (const FGameplayInventoryItemSpec& Other)
 	{
 		return Other.Item == Context.ItemDefinition;	
 	};
 
-	InternalRemoveItemByPredicate(Predicate, ContextCopy);
+	InternalRemoveItemByPredicate(Predicate, Context);
 }
 
 void UGameplayInventoryManager::InternalRemoveItemByPredicate(const TFunctionRef<bool(const FGameplayInventoryItemSpec& Other)>& Predicate, const FGameplayInventoryItemContext& Context)
@@ -263,6 +362,7 @@ void UGameplayInventoryManager::InternalRemoveItemByPredicate(const TFunctionRef
 
 		if (!Predicate(Spec))
 		{
+			LOG_INVENTORY(Display, TEXT("Item %s: Predicate did not match"), *Spec.Item->GetPathName());
 			continue;
 		}
 		
@@ -270,14 +370,17 @@ void UGameplayInventoryManager::InternalRemoveItemByPredicate(const TFunctionRef
 		Spec.StackCount -= StacksToRemove;
 		StacksToRemove -= Delta;
 
-		LOG_INVENTORY(Display, TEXT("Item %s: Removed %d stacks"), *Spec.Item->GetPathName(), Delta);
+		LOG_INVENTORY(Display, TEXT("Item %s Handle: %s: Removed %d stacks"), *Spec.Item->GetPathName(), *Spec.GetHandle().ToString(), Delta);
 
 		MarkInventoryItemSpecDirty(Spec);
 
 		// Remove the item if the stack count is 0
 		if (Spec.StackCount <= 0)
 		{
-			OnRemoveItem(Spec);
+			// Temporarily store the spec so we can call OnRemoveItem
+			FGameplayInventoryItemSpec Temp = Spec;
+			OnRemoveItem(Temp);
+			
 			It.RemoveCurrent();
 			InventoryList.MarkArrayDirty();
 		}
@@ -330,9 +433,8 @@ void UGameplayInventoryManager::RemoveItem(const FGameplayInventoryItemSpecHandl
 FGameplayInventoryItemSpecHandle UGameplayInventoryManager::K2_GiveItemFromContext(const FGameplayInventoryItemContext& Context)
 {
 	check(Context.ItemDefinition);
-	check(Context.StackCount > 0);
 
-	const FGameplayInventoryItemSpec NewSpec(Context.ItemDefinition, Context.StackCount, Context.Instigator);
+	const FGameplayInventoryItemSpec NewSpec(Context.ItemDefinition, FMath::Max(1, Context.StackCount), Context.Instigator);
 	return GiveItem(NewSpec, Context);
 }
 
@@ -399,6 +501,36 @@ TArray<FGameplayInventoryItemSpecHandle> UGameplayInventoryManager::GetInventory
 		Handles.Add(Spec.Handle);
 	}
 	return Handles;
+}
+
+TArray<FGameplayInventoryItemSpec>& UGameplayInventoryManager::GetItemSpecs()
+{
+	return InventoryList.Items;
+}
+
+const TArray<FGameplayInventoryItemSpec>& UGameplayInventoryManager::GetItemSpecs() const
+{
+	return InventoryList.Items;
+}
+
+const TArray<FGameplayInventoryItemSpec> UGameplayInventoryManager::GetItemSpecsInRow(const FGameplayTag& RowTag) const
+{
+	TArray<FGameplayInventoryItemSpec> Items;
+	
+	for (const auto& Spec : InventoryList.Items)
+	{
+		if (!Spec.RowTag.IsValid())
+		{
+			continue;
+		}
+
+		if (Spec.RowTag.MatchesTagExact(RowTag))
+		{
+			Items.Add(Spec);
+		}
+	}
+
+	return Items;
 }
 
 int32 UGameplayInventoryManager::GetTotalItemCountByDefinition(UGameplayInventoryItemDefinition* InItemDef) const
@@ -566,7 +698,7 @@ void UGameplayInventoryManager::OnGiveItem(FGameplayInventoryItemSpec& InSpec)
 		Instance->OnInstanceCreated(InSpec.Handle, nullptr);
 	}
 
-	const APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	const APawn* OwnerPawn = Cast<AController>(GetOwner())->GetPawn();
 	if (OwnerPawn && OwnerPawn->IsLocallyControlled() && OwnerPawn->HasAuthority())
 	{
 		InventoryList.BroadcastInventoryChangeMessage(Instance, 0, InSpec.StackCount);
@@ -581,6 +713,8 @@ void UGameplayInventoryManager::OnRemoveItem(FGameplayInventoryItemSpec& InSpec)
 	}
 
 	OnItemRemoved.Broadcast(InSpec.Handle);
+
+	LOG_INVENTORY(Display, TEXT("OnRemoveItem: Item %s Handle: %s"), *InSpec.Item->GetPathName(), *InSpec.Handle.ToString());
 
 	// Notify the equipment manager that the item has been removed
 	if (UGameplayEquipmentManager* EquipmentManager = UInventorySystemBlueprintLibrary::FindEquipmentManager(GetOwner()))
@@ -630,7 +764,7 @@ void UGameplayInventoryManager::OnChangeItem(FGameplayInventoryItemSpec& InSpec)
 		Instance->OnInstanceChanged(InSpec.Handle /*@TODO: Context */);
 	}
 
-	const APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	const APawn* OwnerPawn = Cast<APawn>(GetOwner<AController>()->GetPawn());
 	if (OwnerPawn && OwnerPawn->IsLocallyControlled() && OwnerPawn->HasAuthority())
 	{
 		InventoryList.BroadcastInventoryChangeMessage(Instance, InSpec.LastObservedStackCount, InSpec.StackCount);

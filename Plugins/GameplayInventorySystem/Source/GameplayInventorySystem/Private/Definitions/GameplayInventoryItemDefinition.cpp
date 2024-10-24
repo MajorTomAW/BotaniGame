@@ -10,6 +10,7 @@
 
 #include "EngineUtils.h"
 #include "GameplayInventoryLogChannels.h"
+#include "Definitions/GameplayEquipmentDefinition.h"
 #include "Fragments/GameplayInventoryItemFragment.h"
 #include "Fragments/Item/ItemFragment_PickupDefinition.h"
 #include "Instance/GameplayInventoryItemInstance.h"
@@ -55,6 +56,23 @@ UGameplayInventoryItemFragment* UGameplayInventoryItemDefinition::GetItemFragmen
 	}
 
 	return nullptr;
+}
+
+UGameplayEquipmentDefinition* UGameplayInventoryItemDefinition::GetEquipmentDefinition(
+	TSubclassOf<class UGameplayEquipmentDefinition> EquipmentClass) const
+{
+	if (EquipmentDefinition->IsA(EquipmentClass))
+	{
+		return EquipmentDefinition;
+	}
+
+	return nullptr;
+}
+
+void UGameplayInventoryItemDefinition::GetStackingData(bool& bCanStack, int32& MaxStackSize) const
+{
+	bCanStack = StackingData.bCanStack;
+	MaxStackSize = StackingData.MaxStackSize;
 }
 
 UClass* UGameplayInventoryItemDefinition::GetInstanceClass() const

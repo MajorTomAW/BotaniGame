@@ -4,6 +4,7 @@
 #include "Pickup/PickupProxyActor.h"
 
 #include "GameplayInventoryLogChannels.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
@@ -11,6 +12,7 @@
 
 #include "Definitions/GameplayInventoryItemDefinition.h"
 #include "Icons/PickupItemIcon.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/Core/PushModel/PushModel.h"
 
 
@@ -40,6 +42,8 @@ APickupProxyActor::APickupProxyActor(const FObjectInitializer& ObjectInitializer
 	RotationSceneComponent = ObjectInitializer.CreateDefaultSubobject<USceneComponent>(this, TEXT("RotationSceneComponent"));
 	ensure(RotationSceneComponent);
 	RotationSceneComponent->SetupAttachment(CollisionComponent);
+
+	bItemPickupEffectsPlayed = false;
 }
 
 void APickupProxyActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -48,6 +52,10 @@ void APickupProxyActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 
 	FDoRepLifetimeParams Params;
 	Params.bIsPushBased = true;
+
+	DOREPLIFETIME_WITH_PARAMS_FAST(ThisClass, TagStacks, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(ThisClass, PickupQuantity, Params);
+	
 	Params.Condition = COND_InitialOnly;
 	Params.RepNotifyCondition = REPNOTIFY_OnChanged;
 	
@@ -82,6 +90,36 @@ void APickupProxyActor::BeginPlay()
 	OnDropped(GetInstigator(), ItemDefinition.Get(), PickupFrag->PickupData);
 }
 
+void APickupProxyActor::Destroyed()
+{
+	if (bItemPickupEffectsPlayed)
+	{
+		return;
+	}
+
+	if (GWorld->IsEditorWorld())
+	{
+		return;
+	}
+
+	if (!GetPickupData().PickupEffect.IsNull())
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), GetPickupData().PickupEffect.LoadSynchronous(), GetActorLocation(), GetActorRotation());
+	}
+
+	if (!GetPickupData().PickupSound.IsNull())
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), GetPickupData().PickupSound.LoadSynchronous(), GetActorLocation(), GetActorRotation());
+	}
+	
+	Super::Destroyed();
+}
+
+const FGameplayTagStackContainer& APickupProxyActor::GetOwnedGameplayTagStacks() const
+{
+	return TagStacks;
+}
+
 void APickupProxyActor::OnDropped(AActor* InInstigator, UGameplayInventoryItemDefinition* InItemDefinition, const FInventoryItemPickupData& InPickupData)
 {
 	for (UPickupItemIcon* Icon : InPickupData.PickupIcons)
@@ -95,6 +133,23 @@ void APickupProxyActor::OnDropped(AActor* InInstigator, UGameplayInventoryItemDe
 void APickupProxyActor::OnPickedUp(AActor* InInstigator)
 {
 	K2_OnPickedUp(InInstigator);
+	
+	if (!GetPickupData().PickupEffect.IsNull())
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), GetPickupData().PickupEffect.LoadSynchronous(), GetActorLocation(), GetActorRotation());
+	}
+
+	if (!GetPickupData().PickupSound.IsNull())
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), GetPickupData().PickupSound.LoadSynchronous(), GetActorLocation(), GetActorRotation());
+	}
+
+	bItemPickupEffectsPlayed = true;
+
+	if (GetPickupData().bDestroyOnPickup)
+	{
+		Destroy();
+	}
 }
 
 UGameplayInventoryItemDefinition* APickupProxyActor::GetItemDefinition() const
@@ -190,8 +245,9 @@ void APickupProxyActor::OnRep_ItemDefinition()
 
 FInventoryItemPickupData APickupProxyActor::GetPickupData() const
 {
-	UItemFragment_PickupDefinition* PickupFrag = ItemDefinition.LoadSynchronous()->GetItemFragment<UItemFragment_PickupDefinition>();
-	if (!ensure(PickupFrag))
+	auto Def = ItemDefinition.LoadSynchronous();
+	UItemFragment_PickupDefinition* PickupFrag = Def ? Def->GetItemFragment<UItemFragment_PickupDefinition>() : nullptr;
+	if (!PickupFrag)
 	{
 		return FInventoryItemPickupData();
 	}

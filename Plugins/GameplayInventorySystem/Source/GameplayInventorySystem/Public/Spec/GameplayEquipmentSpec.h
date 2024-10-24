@@ -1,6 +1,7 @@
 // Copyright © 2024 MajorT. All rights reserved.
 
 #pragma once
+
 #include "ActiveGameplayEffectHandle.h"
 #include "GameplayAbilitySpecHandle.h"
 #include "GameplayInventoryItemSpec.h"
@@ -69,6 +70,14 @@ struct GAMEPLAYINVENTORYSYSTEM_API FGameplayEquipmentSpec : public FFastArraySer
 public:
 	/** Returns the equipment instance */
 	UGameplayEquipmentInstance* GetInstance() const { return Instance; }
+
+
+	/** Returns the equipment instance as a specific type */
+	template <typename T>
+	T* GetInstance() const
+	{
+		return Cast<T>(Instance);
+	}
 
 public:
 	/** The item spec that this equipment is for */

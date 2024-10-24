@@ -290,7 +290,7 @@
 		},
 		{
 			"Name": "VaazTower",
-			"Enabled": true
+			"Enabled": false
 		},
 		{
 			"Name": "InteractionCore",

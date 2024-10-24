@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagStackContainer.h"
+#include "GameplayTagStackInterface.h"
 #include "Definitions/GameplayInventoryItemDefinition.h"
 #include "Fragments/Item/ItemFragment_PickupDefinition.h"
 #include "GameFramework/Actor.h"
@@ -16,14 +18,19 @@ class USphereComponent;
  * An actor class used to function as a proxy between the item definition and the world it was dropped in.
  */
 UCLASS(MinimalAPI, Config = Game, HideCategories = ("Rendering", "Replication", "Networking", "HLOD", "Input", "Actor", "Tick", "Cooking", "Collision", "Physics", "LevelInstance", "DataLayers"))
-class APickupProxyActor : public AActor
+class APickupProxyActor : public AActor, public IGameplayTagStackInterface
 {
 	GENERATED_UCLASS_BODY()
 
 public:
 	//~ Begin AActor Interface
 	GAMEPLAYINVENTORYSYSTEM_API virtual void BeginPlay() override;
+	GAMEPLAYINVENTORYSYSTEM_API virtual void Destroyed() override;
 	//~ End AActor Interface
+
+	//~ Begin IGameplayTagStackInterface Interface
+	GAMEPLAYINVENTORYSYSTEM_API virtual const FGameplayTagStackContainer& GetOwnedGameplayTagStacks() const override;
+	//~ End IGameplayTagStackInterface Interface
 
 	/** Called after the pickup has been dropped and initialized. */
 	UFUNCTION(BlueprintCallable, Category = "Pickup")
@@ -36,6 +43,10 @@ public:
 	/** Returns the item definition for this pickup. */
 	UPROPERTY(ReplicatedUsing = OnRep_ItemDefinition, EditAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (ExposeOnSpawn = true))
 	TSoftObjectPtr<UGameplayInventoryItemDefinition> ItemDefinition;
+
+	/** Determines the authority-only pickup quantity. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category = "Pickup", meta = (ExposeOnSpawn = true, UIMin = 0, ClampMin = 0))
+	int32 PickupQuantity = 1;
 	
 protected:
 	/** Gets the item definition for this pickup. */
@@ -59,14 +70,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<USphereComponent> CollisionComponent;
 
+	GAMEPLAYINVENTORYSYSTEM_API void ApplyPickupFragment(const UItemFragment_PickupDefinition* InPickupFragment);
+
+public:
 	/** The scene component used to attach any preview meshes or effects. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<USceneComponent> RotationSceneComponent;
 
-
-	void ApplyPickupFragment(const UItemFragment_PickupDefinition* InPickupFragment);
-
-public:
 #if WITH_EDITOR
 	GAMEPLAYINVENTORYSYSTEM_API virtual void OnConstruction(const FTransform& Transform) override;
 #endif
@@ -80,7 +90,11 @@ private:
 
 	GAMEPLAYINVENTORYSYSTEM_API FInventoryItemPickupData GetPickupData() const;
 	
-private:
+protected:
+	/** The stored tag stacks of the item instance. */
+	UPROPERTY(Transient, Replicated)
+	FGameplayTagStackContainer TagStacks;
+	
 	GAMEPLAYINVENTORYSYSTEM_API void RequestUnloadItem();
 	
 	/** The delay before unloading the item definition. Prevents unloaded items from being used. */

@@ -63,11 +63,11 @@ public:
 	UFUNCTION(BlueprintPure, meta=(DisplayName = "To String (Item Handle)", CompactNodeTitle = "->", BlueprintAutocast), Category="Utilities|String")
 	static FString Conv_ItemHandleToString(FGameplayInventoryItemSpecHandle Handle);
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory System", meta = (DisplayName = "Create Item Context (Simple)", DefaultToSelf = "Instigator"))
+	/*UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory System", meta = (DisplayName = "Create Item Context (Simple)", DefaultToSelf = "Instigator"))
 	static FGameplayInventoryItemContext CreateItemContext(UGameplayInventoryComponent* OwnerComponent, UObject* Instigator, FGameplayTagContainer Tags);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory System", meta = (DisplayName = "Create Item Context (Advanced)", DefaultToSelf = "Instigator"))
-	static FGameplayInventoryItemContext CreateItemContextAdvanced(UGameplayInventoryComponent* OwnerComponent, UObject* Instigator, FGameplayTagContainer Tags, UGameplayInventoryItemDefinition* ItemDefinition, const int32 StackCount);
+	static FGameplayInventoryItemContext CreateItemContextAdvanced(UGameplayInventoryComponent* OwnerComponent, UObject* Instigator, FGameplayTagContainer Tags, UGameplayInventoryItemDefinition* ItemDefinition, const int32 StackCount);*/
 
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Inventory System", meta = (DisplayName = "Drop Item (By Handle)"))
 	static void DropItemByHandle(UGameplayInventoryManager* InventoryManager, const FGameplayInventoryItemSpecHandle& ItemHandle, const int32 DropCount, const FTransform& DropTransform);

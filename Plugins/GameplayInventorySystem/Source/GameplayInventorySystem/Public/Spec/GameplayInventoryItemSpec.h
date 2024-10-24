@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameplayInventoryItemSpecHandle.h"
+#include "GameplayTagContainer.h"
 #include "Net/Serialization/FastArraySerializer.h"
 
 
@@ -30,7 +31,7 @@ struct GAMEPLAYINVENTORYSYSTEM_API FGameplayInventoryItemSpec : public FFastArra
 public:
 	bool IsValid() const
 	{
-		return Instance != nullptr;
+		return ( Instance != nullptr ) || (Item != nullptr);
 	}
 
 	bool operator==(const FGameplayInventoryItemSpec& Other) const
@@ -61,6 +62,20 @@ public:
 	UGameplayInventoryItemDefinition* GetItemDefinition() const { return Item; }
 	FGameplayInventoryItemSpecHandle GetHandle() const { return Handle; }
 
+	/** Returns the item definition as the specified type */
+	template <typename T>
+	T* GetItemDefinition() const
+	{
+		return Cast<T>(Item);
+	}
+
+	/** Returns the item instance as the specified type */
+	template <typename T>
+	T* GetInstance() const
+	{
+		return Cast<T>(Instance);
+	}
+
 private:
 	/** Replicated item instance. */
 	UPROPERTY()
@@ -69,6 +84,10 @@ private:
 	/** Replicated item definition. */
 	UPROPERTY()
 	TObjectPtr<class UGameplayInventoryItemDefinition> Item;
+
+	/** Row tag where this item lives in. Might often be null if not setup properly. */
+	UPROPERTY()
+	FGameplayTag RowTag;
 
 	/** Object this item was created from. Can be an actor or static object. */
 	UPROPERTY()

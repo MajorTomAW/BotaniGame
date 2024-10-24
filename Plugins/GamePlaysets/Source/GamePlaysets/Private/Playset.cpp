@@ -65,6 +65,18 @@ FVector UPlayset::GetPlaysetLocationOffset() const
 	return FVector::ZeroVector;
 }
 
+UTexture2D* UPlayset::GetIcon(const bool bUseLargeIfNotFound) const
+{
+	UTexture2D* Icon = DataList.Icon.Get();
+
+	if (Icon == nullptr)
+	{
+		Icon = DataList.LargeIcon.Get();
+	}
+
+	return Icon;
+}
+
 #if WITH_EDITOR
 void UPlayset::InitializeDisplayInfo(const FPlaysetDisplayInfo& InDisplayInfo)
 {

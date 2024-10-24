@@ -25,8 +25,8 @@ public:
 	/** Converts the description text to a multi-line text and returns it. */
 	virtual FText GetPlaysetDesc() const;
 	/** Converts the description text to a multi-line text and returns it. */
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Playset", meta = (DisplayName = "Get Playset Description"))
-	FText K2_GetPlaysetDescription() const { return GetPlaysetDesc(); }
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Playset", meta = (DisplayName = "Get Item Description"))
+	FText K2_GetItemDescription() const { return GetPlaysetDesc(); }
 
 	/** Gets the location offset of the playset (if applicable). */
 	virtual FVector GetPlaysetLocationOffset() const;
@@ -56,6 +56,28 @@ protected:
 
 	virtual void InitializeSavedActor_Internal(const FVector& RelativeOrigin, const FAssetData& InActorData);
 #endif
+
+public:
+	/** Returns the playset tags. */
+	UFUNCTION(BlueprintCallable, Category = "Playset", meta = (DisplayName = "Get Gameplay Tags"))
+	const FGameplayTagContainer& K2_GetGameplayTags() const { return GetGameplayTags(); }
+
+	/** Returns the display name of the playset. */
+	UFUNCTION(BlueprintCallable, Category = "Playset")
+	FText GetDisplayName() const { return DisplayInfo.ItemName; }
+
+	/** Returns the description of the playset. */
+	UFUNCTION(BlueprintCallable, Category = "Playset")
+	FText GetItemShortDescription() const { return DisplayInfo.ItemShortDescription;}
+
+	/** Returns the display name as a string. */
+	UFUNCTION(BlueprintCallable, Category = "Playset")
+	FString GetDisplayNameString() const { return DisplayInfo.ItemName.ToString(); }
+
+	/** Tries to return the icon of the playset. */
+	UFUNCTION(BlueprintCallable, Category = "Playset")
+	UTexture2D* GetIcon(const bool bUseLargeIfNotFound = true) const;
+	
 
 public:
 	/******************************* General *******************************/

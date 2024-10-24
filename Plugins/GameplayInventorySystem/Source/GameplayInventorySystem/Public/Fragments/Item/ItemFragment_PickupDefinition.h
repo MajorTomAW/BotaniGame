@@ -59,7 +59,7 @@ public:
 	float PickupRadius;
 
 	/** The list of pickup icons to be shown when this item is spawned in the world. */
-	UPROPERTY(Instanced, EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup")
+	UPROPERTY(Instanced, EditDefaultsOnly, BlueprintReadOnly, Category = "Pickup", meta = (TitleProperty = "Icon: {EditorFriendlyName}"))
 	TArray<TObjectPtr<class UPickupItemIcon>> PickupIcons;
 
 	/** The effect to be played when the item is picked up. */
