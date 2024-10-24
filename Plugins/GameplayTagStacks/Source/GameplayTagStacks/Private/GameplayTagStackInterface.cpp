@@ -52,33 +52,33 @@ void IGameplayTagStackInterface::RemoveGameplayTagStack(const FGameplayTag Tag, 
 	MutableContainer.RemoveStack(Tag, StackCount);
 }
 
-void UGameplayTagStackLibrary::GetOwnedGameplayTagStacks(AActor* TargetActor, FGameplayTagStackContainer& TagStackContainer)
+void UGameplayTagStackLibrary::GetOwnedGameplayTagStacks(UObject* Target, FGameplayTagStackContainer& TagStackContainer)
 {
 	// Check for the interface on the actor (Works for c++ implementations)
-	if (const IGameplayTagStackInterface* TagStackInterface = Cast<IGameplayTagStackInterface>(TargetActor))
+	if (const IGameplayTagStackInterface* TagStackInterface = Cast<IGameplayTagStackInterface>(Target))
 	{
 		TagStackContainer = TagStackInterface->GetOwnedGameplayTagStacks();
 		return;
 	}
 	
 	// Check for the interface on the actor (Works for blueprint implementations)
-	if (TargetActor->GetClass()->ImplementsInterface(UGameplayTagStackInterface::StaticClass()))
+	if (Target->GetClass()->ImplementsInterface(UGameplayTagStackInterface::StaticClass()))
 	{
 		//@TODO: Implement blueprint version of GetOwnedGameplayTagStacks
 		return;
 	}
 }
 
-bool UGameplayTagStackLibrary::HasMatchingGameplayTagStack(AActor* TargetActor, const FGameplayTag TagToCheck)
+bool UGameplayTagStackLibrary::HasMatchingGameplayTagStack(UObject* Target, const FGameplayTag TagToCheck)
 {
 	// Check for the interface on the actor (Works for c++ implementations)
-	if (const IGameplayTagStackInterface* TagStackInterface = Cast<IGameplayTagStackInterface>(TargetActor))
+	if (const IGameplayTagStackInterface* TagStackInterface = Cast<IGameplayTagStackInterface>(Target))
 	{
 		return TagStackInterface->HasMatchingGameplayTagStack(TagToCheck);
 	}
 
 	// Check for the interface on the actor (Works for blueprint implementations)
-	if (TargetActor->GetClass()->ImplementsInterface(UGameplayTagStackInterface::StaticClass()))
+	if (Target->GetClass()->ImplementsInterface(UGameplayTagStackInterface::StaticClass()))
 	{
 		//@TODO: Implement blueprint version of HasMatchingGameplayTagStack
 	};
@@ -91,16 +91,16 @@ bool UGameplayTagStackLibrary::HasMatchingGameplayTagStackContainer(const FGamep
 	return TagStackContainer.ContainsTag(TagToCheck);
 }
 
-int32 UGameplayTagStackLibrary::GetGameplayTagStackCount(AActor* TargetActor, const FGameplayTag TagToCheck)
+int32 UGameplayTagStackLibrary::GetGameplayTagStackCount(UObject* Target, const FGameplayTag TagToCheck)
 {
 	// Check for the interface on the actor (Works for c++ implementations)
-	if (const IGameplayTagStackInterface* TagStackInterface = Cast<IGameplayTagStackInterface>(TargetActor))
+	if (const IGameplayTagStackInterface* TagStackInterface = Cast<IGameplayTagStackInterface>(Target))
 	{
 		return TagStackInterface->GetGameplayTagStackCount(TagToCheck);
 	}
 
 	// Check for the interface on the actor (Works for blueprint implementations)
-	if (TargetActor->GetClass()->ImplementsInterface(UGameplayTagStackInterface::StaticClass()))
+	if (Target && Target->GetClass()->ImplementsInterface(UGameplayTagStackInterface::StaticClass()))
 	{
 		//@TODO: Implement blueprint version of GetGameplayTagStackCount
 	}
@@ -111,5 +111,18 @@ int32 UGameplayTagStackLibrary::GetGameplayTagStackCount(AActor* TargetActor, co
 int32 UGameplayTagStackLibrary::GetGameplayTagStackCountContainer(const FGameplayTagStackContainer& TagStackContainer, const FGameplayTag TagToCheck)
 {
 	return TagStackContainer.GetStackCount(TagToCheck);
+}
+
+TArray<FGameplayTagStack> UGameplayTagStackLibrary::GetGameplayTagStacks(
+	const FGameplayTagStackContainer& TagStackContainer)
+{
+	return TagStackContainer.GetStacks();
+}
+
+void UGameplayTagStackLibrary::BreakGameplayTagStack(
+	const FGameplayTagStack& TagStack, FGameplayTag& Tag, int32& StackCount)
+{
+	Tag = TagStack.GetTag();
+	StackCount = TagStack.GetStackCount();
 }
 

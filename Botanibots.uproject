@@ -289,8 +289,8 @@
 			"MarketplaceURL": "https://www.unrealengine.com/marketplace/en-US/product/ui-material-lab?sessionInvalidated=true"
 		},
 		{
-			"Name": "VaazTower",
-			"Enabled": false
+			"Name": "EnhancedInput",
+			"Enabled": true
 		},
 		{
 			"Name": "InteractionCore",
@@ -392,10 +392,18 @@
 			"Name": "BioDevice_AISpawner",
 			"Enabled": true
 		},
-    {
-      "Name": "Iris",
-      "Enabled": true
-    }
+		{
+			"Name": "Iris",
+			"Enabled": true
+		},
+		{
+			"Name": "InventoryCore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioTools",
+			"Enabled": true
+		}
 	],
 	"TargetPlatforms": [
 		"Windows"

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "GameplayTagStackContainer.h"
 #include "UObject/Interface.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GameplayTagStackInterface.generated.h"
@@ -82,20 +83,20 @@ class UGameplayTagStackLibrary : public UBlueprintFunctionLibrary
 public:
 	/**
 	 * Get any owned gameplay tag stacks on the actor
-	 * @param TargetActor	Actor to get tag stacks from
+	 * @param Target	Actor to get tag stacks from
 	 * @param TagStackContainer	[OUT] Set of tag stacks on the actor
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags)
-	static GAMEPLAYTAGSTACKS_API void GetOwnedGameplayTagStacks(AActor* TargetActor, FGameplayTagStackContainer& TagStackContainer);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags, meta = (DefaultToSelf = "Target"))
+	static GAMEPLAYTAGSTACKS_API void GetOwnedGameplayTagStacks(UObject* Target, FGameplayTagStackContainer& TagStackContainer);
 
 	/**
 	 * Check if the actor has at least one stack of the specified tags
-	 * @param TargetActor	Actor to get tag stacks from
+	 * @param Target	Actor to get tag stacks from
 	 * @param TagToCheck	Tag to check for a match
 	 * @returns True if the actor has a stack of the specified tags, false if not
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags)
-	static GAMEPLAYTAGSTACKS_API bool HasMatchingGameplayTagStack(AActor* TargetActor, const FGameplayTag TagToCheck);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags, meta = (DefaultToSelf = "Target"))
+	static GAMEPLAYTAGSTACKS_API bool HasMatchingGameplayTagStack(UObject* Target, const FGameplayTag TagToCheck);
 
 	/**
 	 * Check if that tag stack container has at least one stack of the specified tags
@@ -109,12 +110,12 @@ public:
 	/**
 	 * Returns the stack count of the specified tag.
 	 * Or 0 if the tag is not found.
-	 * @param TargetActor	Actor to get tag stacks from
+	 * @param Target	Actor to get tag stacks from
 	 * @param TagToCheck Tag to check for a match
 	 * @returns The stack count of the specified tag (0 if not found)
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags)
-	static GAMEPLAYTAGSTACKS_API int32 GetGameplayTagStackCount(AActor* TargetActor, const FGameplayTag TagToCheck);
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags, meta = (DefaultToSelf = "Target"))
+	static GAMEPLAYTAGSTACKS_API int32 GetGameplayTagStackCount(UObject* Target, const FGameplayTag TagToCheck);
 
 	/**
 	 * Returns the stack count of the specified tag.
@@ -125,4 +126,21 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags)
 	static GAMEPLAYTAGSTACKS_API int32 GetGameplayTagStackCountContainer(const FGameplayTagStackContainer& TagStackContainer, const FGameplayTag TagToCheck);
+
+	/**
+	 * Returns the list of tag stacks in the given tag stack container.
+	 * @param TagStackContainer Tag stack container to get the stacks from
+	 * @returns The list of tag stacks in the given tag stack container
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags)
+	static GAMEPLAYTAGSTACKS_API TArray<FGameplayTagStack> GetGameplayTagStacks(const FGameplayTagStackContainer& TagStackContainer);
+
+	/**
+	 * Breaks a tag stack into its tag and stack count.
+	 * @param TagStack Tag stack to break
+	 * @param [OUT] Tag The tag of the tag stack
+	 * @param [OUT] StackCount The stack count of the tag stack
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = GameplayTags)
+	static GAMEPLAYTAGSTACKS_API void BreakGameplayTagStack(const FGameplayTagStack& TagStack, FGameplayTag& Tag, int32& StackCount);
 };
