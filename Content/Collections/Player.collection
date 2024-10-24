@@ -1,0 +1,7 @@
+FileVersion:2
+Type:Static
+Guid:D7DA0EEC-4A2B-B8F7-267C-F9842F5EEDAA
+ParentGuid:00000000-0000-0000-0000-000000000000
+
+/BioGame/Game/B_Hero_BioPawn.B_Hero_BioPawn
+/Game/Characters/Player/B_BotaniCharacter_Default.B_BotaniCharacter_Default
