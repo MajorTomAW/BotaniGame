@@ -144,13 +144,14 @@ class APickupProxyActor* UInventorySystemBlueprintLibrary::SpawnPickupProxyActor
 		return nullptr;
 	}
 
-	UItemFragment_PickupDefinition* PickupFrag = ItemDefinition->GetItemFragment<UItemFragment_PickupDefinition>();
+	const UItemFragment_PickupDefinition* PickupFrag = ItemDefinition->GetItemFragment<UItemFragment_PickupDefinition>();
 	UClass* PickupClass = PickupFrag->GetPickupProxyActor().LoadSynchronous();
 
 	APickupProxyActor* PickupActor = World->SpawnActorDeferred<APickupProxyActor>(PickupClass, SpawnTransform, Owner, Instigator, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
 	check(PickupActor);
 	
 	PickupActor->ItemDefinition = ItemDefinition;
+	PickupActor->PickupQuantity = StackCount;
 
 	PickupActor->FinishSpawning(SpawnTransform);
 	return PickupActor;

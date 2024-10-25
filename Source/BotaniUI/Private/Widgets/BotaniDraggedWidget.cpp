@@ -28,6 +28,16 @@ UObject* UBotaniDragDropOperation::GetTypedPayload(const TSubclassOf<UObject> Pa
 	return nullptr;
 }
 
+void UBotaniDragDropOperation::SetDragOperationTag(FGameplayTag InTag)
+{
+	Tag = InTag.ToString();
+}
+
+FGameplayTag UBotaniDragDropOperation::GetDragOperationTag() const
+{
+	return FGameplayTag::RequestGameplayTag(FName(*Tag));
+}
+
 
 UBotaniDraggedWidget::UBotaniDraggedWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

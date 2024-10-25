@@ -166,6 +166,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory")
 	int32 GetTotalItemCountByDefinition(UGameplayInventoryItemDefinition* InItemDef) const;
 
+	/** Returns the list of row configs that this inventory manager uses */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory")
+	const TArray<UGameplayInventoryRowConfig*>& GetRowConfig() const;
+
 	/** Creates and returns a new item context */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory", meta = (DefaultToSelf = "Instigator"))
 	FGameplayInventoryItemContext MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, int32 StackCount = -1, AActor* Instigator = nullptr, FGameplayTagContainer ContextTags = FGameplayTagContainer());
@@ -217,7 +221,7 @@ protected:
 
 protected:
 	/** The initial inventory row config. */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inventory")
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TArray<TObjectPtr<class UGameplayInventoryRowConfig>> RowConfigs;
 	
 protected:

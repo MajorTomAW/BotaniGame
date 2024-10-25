@@ -52,6 +52,14 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Drag and Drop", meta = (DeterminesOutputType = "PayloadType"))
 	UObject* GetTypedPayload(const TSubclassOf<UObject> PayloadType);
 
+	/** Sets the tag of the drag operation. */
+	UFUNCTION(BlueprintCallable, Category = "Drag and Drop")
+	void SetDragOperationTag(FGameplayTag InTag);
+
+	/** Returns the tag of the drag operation. */
+	UFUNCTION(BlueprintCallable, Category = "Drag and Drop")
+	FGameplayTag GetDragOperationTag() const;
+
 public:
 	/** The widget that "instigated" this drag drop operation. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drag and Drop", meta=( ExposeOnSpawn="true"))

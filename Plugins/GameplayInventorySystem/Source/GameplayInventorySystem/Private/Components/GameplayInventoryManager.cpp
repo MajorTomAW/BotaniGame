@@ -129,7 +129,26 @@ bool UGameplayInventoryManager::CanAddItemDef(const FGameplayInventoryItemSpec& 
 
 bool UGameplayInventoryManager::CanAddItemFullyToExisting(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, FGameplayInventoryItemSpec& ExistingSpec)
 {
-	return false;
+	const int32 StacksToAdd = Context.StackCount;
+	
+	if (ExistingSpec.GetItemDefinition() == nullptr)
+	{
+		return false;
+	}
+	
+	const FGameplayInventoryItemStackingData& StackingData = ExistingSpec.GetItemDefinition()->StackingData;
+	
+	if (!StackingData.bCanStack)
+	{
+		return false;
+	}
+	
+	if (StackingData.MaxStackSize < StacksToAdd + ExistingSpec.GetStackCount())
+	{
+		return false;	
+	}
+
+	return true;
 }
 
 bool UGameplayInventoryManager::CanAddItemToRow(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, const UGameplayInventoryRowConfig* RowConfig)
@@ -553,6 +572,11 @@ int32 UGameplayInventoryManager::GetTotalItemCountByDefinition(UGameplayInventor
 	}
 
 	return TotalCount;
+}
+
+const TArray<UGameplayInventoryRowConfig*>& UGameplayInventoryManager::GetRowConfig() const
+{
+	return RowConfigs;
 }
 
 FGameplayInventoryItemContext UGameplayInventoryManager::MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, const int32 StackCount, AActor* Instigator, const FGameplayTagContainer ContextTags)
