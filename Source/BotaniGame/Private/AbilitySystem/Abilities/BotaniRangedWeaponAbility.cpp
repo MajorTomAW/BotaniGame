@@ -4,14 +4,11 @@
 #include "AbilitySystem/Abilities/BotaniRangedWeaponAbility.h"
 
 #include "BotaniLogChannels.h"
-#include "Components/GameplayInventoryManager.h"
 #include "GameplayTags/BotaniGameplayTags.h"
-#include "Inventory/Definitions/BotaniAmmoDefinition.h"
 #include "Inventory/Definitions/BotaniWeaponDefinition.h"
-#include "Inventory/Definitions/WeaponModes/WeaponMode_RangedWeapon.h"
+#include "Inventory/Weapons/Modes/WeaponMode_RangedWeapon.h"
 #include "Inventory/Instances/BotaniItemInstance.h"
 #include "Inventory/Instances/BotaniWeaponEquipmentInstance.h"
-#include "System/BotaniAssetManager.h"
 
 UBotaniRangedWeaponAbility::UBotaniRangedWeaponAbility(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

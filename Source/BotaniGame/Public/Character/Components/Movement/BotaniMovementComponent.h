@@ -29,6 +29,7 @@ public:
 	virtual void UpdateCharacterStateBeforeMovement(float DeltaSeconds) override;
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 
+	virtual FRotator GetDeltaRotation(float DeltaTime) const override;
 	virtual float GetMaxSpeed() const override;
 	virtual float GetMaxBrakingDeceleration() const override;
 
@@ -219,6 +220,7 @@ public:
 	virtual void PhysSlide(float deltaTime, int32 Iterations);
 
 	/** Returns true if the character is currently sliding. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Character Movement: Sliding")
 	virtual bool IsSliding() const;
 
 	virtual bool ExitSliding();

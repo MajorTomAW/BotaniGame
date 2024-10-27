@@ -99,6 +99,12 @@ bool UGameplayInventoryManager::CanAddItemDef(const FGameplayInventoryItemSpec& 
 		return false;
 	}
 
+	// Check for blueprint implementation
+	if (!K2_CanAddItemDef(ItemSpec, Context))
+	{
+		return false;
+	}
+
 
 	// Check requirements
 	for (UGameplayInventoryRequirement* Requirement : ItemDef->ItemRequirements)
@@ -124,6 +130,12 @@ bool UGameplayInventoryManager::CanAddItemDef(const FGameplayInventoryItemSpec& 
 		}
 	}
 
+	return true;
+}
+
+bool UGameplayInventoryManager::K2_CanAddItemDef_Implementation(
+	const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context)
+{
 	return true;
 }
 
@@ -722,11 +734,13 @@ void UGameplayInventoryManager::OnGiveItem(FGameplayInventoryItemSpec& InSpec)
 		Instance->OnInstanceCreated(InSpec.Handle, nullptr);
 	}
 
-	const APawn* OwnerPawn = Cast<AController>(GetOwner())->GetPawn();
+	const APawn* OwnerPawn = GetOwnerPawn();
 	if (OwnerPawn && OwnerPawn->IsLocallyControlled() && OwnerPawn->HasAuthority())
 	{
 		InventoryList.BroadcastInventoryChangeMessage(Instance, 0, InSpec.StackCount);
 	}
+
+	K2_OnGiveItem(InSpec);
 }
 
 void UGameplayInventoryManager::OnRemoveItem(FGameplayInventoryItemSpec& InSpec)
@@ -739,6 +753,8 @@ void UGameplayInventoryManager::OnRemoveItem(FGameplayInventoryItemSpec& InSpec)
 	OnItemRemoved.Broadcast(InSpec.Handle);
 
 	LOG_INVENTORY(Display, TEXT("OnRemoveItem: Item %s Handle: %s"), *InSpec.Item->GetPathName(), *InSpec.Handle.ToString());
+
+	K2_OnRemoveItem(InSpec);
 
 	// Notify the equipment manager that the item has been removed
 	if (UGameplayEquipmentManager* EquipmentManager = UInventorySystemBlueprintLibrary::FindEquipmentManager(GetOwner()))
@@ -767,7 +783,7 @@ void UGameplayInventoryManager::OnRemoveItem(FGameplayInventoryItemSpec& InSpec)
 		}
 	}
 
-	const APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	const APawn* OwnerPawn = GetOwnerPawn();
 	if (OwnerPawn && OwnerPawn->IsLocallyControlled() && OwnerPawn->HasAuthority())
 	{
 		InventoryList.BroadcastInventoryChangeMessage(Instance, InSpec.StackCount, 0);
@@ -788,7 +804,7 @@ void UGameplayInventoryManager::OnChangeItem(FGameplayInventoryItemSpec& InSpec)
 		Instance->OnInstanceChanged(InSpec.Handle /*@TODO: Context */);
 	}
 
-	const APawn* OwnerPawn = Cast<APawn>(GetOwner<AController>()->GetPawn());
+	const APawn* OwnerPawn = GetOwnerPawn();
 	if (OwnerPawn && OwnerPawn->IsLocallyControlled() && OwnerPawn->HasAuthority())
 	{
 		InventoryList.BroadcastInventoryChangeMessage(Instance, InSpec.LastObservedStackCount, InSpec.StackCount);

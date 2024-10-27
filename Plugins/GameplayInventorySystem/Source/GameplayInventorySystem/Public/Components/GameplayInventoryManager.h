@@ -41,6 +41,16 @@ public:
 	 * @return					True if the item can be added
 	 */
 	virtual bool CanAddItemDef(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context);
+
+	/**
+	 * Returns whether the ItemDefinition can be added to the inventory, will be based on certain conditions like stack count, weight, etc.
+	 * @param ItemSpec		FInventoryItemSpec of the item to give, including the item instance and stack count.
+	 * @param Context		Context for the item.
+	 * @return					True if the item can be added
+	 */
+	UFUNCTION(BlueprintNativeEvent, Category = "Inventory|Item", meta = (DisplayName = "Can Add Item"))
+	bool K2_CanAddItemDef(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context);
+	
 	virtual bool CanAddItemFullyToExisting(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, FGameplayInventoryItemSpec& ExistingSpec);
 
 	virtual bool CanAddItemToRow(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, const UGameplayInventoryRowConfig* RowConfig);
@@ -201,8 +211,16 @@ public:
 	/** Called after an item has been given to the inventory */
 	virtual void OnGiveItem(FGameplayInventoryItemSpec& InSpec);
 
+	/** Called after an item has been given to the inventory. */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Inventory", meta = (DisplayName = "On Give Item"))
+	void K2_OnGiveItem(FGameplayInventoryItemSpec& InSpec);
+
 	/** Called after an item has been removed from the inventory */
 	virtual void OnRemoveItem(FGameplayInventoryItemSpec& InSpec);
+
+	/** Called after an item has been removed from the inventory */
+	UFUNCTION(BlueprintImplementableEvent, Category = "Inventory", meta = (DisplayName = "On Remove Item"))
+	void K2_OnRemoveItem(FGameplayInventoryItemSpec& InSpec);
 
 	/** Called after an item has been changed in the inventory */
 	virtual void OnChangeItem(FGameplayInventoryItemSpec& InSpec);

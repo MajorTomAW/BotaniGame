@@ -59,7 +59,7 @@ protected:
 
 public:
 	/** Returns the playset tags. */
-	UFUNCTION(BlueprintCallable, Category = "Playset", meta = (DisplayName = "Get Gameplay Tags"))
+	UFUNCTION(BlueprintCallable, Category = "Playset", meta = (DisplayName = "Get Const Gameplay Tags"))
 	const FGameplayTagContainer& K2_GetGameplayTags() const { return GetGameplayTags(); }
 
 	/** Returns the display name of the playset. */

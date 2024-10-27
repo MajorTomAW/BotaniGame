@@ -130,6 +130,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Botani|Weapon", meta = (DisplayName = "Find Weapon Mode", DeterminesOutputType = "ModeClass"))
 	const UBotaniWeaponMode* GetWeaponMode(const TSubclassOf<UBotaniWeaponMode> ModeClass) const;
+
+	template <typename T>
+	const T* GetWeaponMode() const
+	{
+		return Cast<T>(GetWeaponMode(T::StaticClass()));
+	}
 	
 public:
 	/******************************************************************************************************

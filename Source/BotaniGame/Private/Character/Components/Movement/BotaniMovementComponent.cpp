@@ -3,6 +3,8 @@
 
 #include "Character/Components/Movement/BotaniMovementComponent.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
 #include "BotaniLogChannels.h"
 #include "Character/BotaniCharacter.h"
 #include "Character/Components/Movement/BotaniMovementTypes.h"
@@ -197,11 +199,6 @@ void UBotaniMovementComponent::PhysCustom(float deltaTime, int32 Iterations)
 
 void UBotaniMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSeconds)
 {
-	if (IsFalling())
-	{
-		TryWallRun();
-	}
-
 	if (!IsGrappling() && CanGrapple() && BotaniCharacterOwner->bWantsToGrapple)
 	{
 		const bool bSuccess = TryGrapple();
@@ -225,6 +222,11 @@ void UBotaniMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSec
 	else if (IsCustomMovementMode(CMOVE_Slide) && !BotaniCharacterOwner->bWantsToSlide)
 	{
 		SetMovementMode(MOVE_Walking);
+	}
+
+	if (IsFalling())
+	{
+		TryWallRun();
 	}
 	
 	Super::UpdateCharacterStateBeforeMovement(DeltaSeconds);
@@ -256,9 +258,30 @@ void UBotaniMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovem
 	}
 }
 
+FRotator UBotaniMovementComponent::GetDeltaRotation(float DeltaTime) const
+{
+	if (UAbilitySystemComponent* ASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(CharacterOwner))
+	{
+		if (ASC->HasMatchingGameplayTag(BotaniGameplayTags::Movement::Modifier::TAG_MovementModifier_BlockMoving))
+		{
+			return FRotator::ZeroRotator;
+		}
+	}
+	
+	return Super::GetDeltaRotation(DeltaTime);
+}
+
 float UBotaniMovementComponent::GetMaxSpeed() const
 {
 	float MaxSpeed = Super::GetMaxSpeed();
+
+	if (UAbilitySystemComponent* ASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(CharacterOwner))
+	{
+		if (ASC->HasMatchingGameplayTag(BotaniGameplayTags::Movement::Modifier::TAG_MovementModifier_BlockMoving))
+		{
+			return 0.f;
+		}
+	}
 
 	if (IsValid(BotaniCharacterOwner))
 	{

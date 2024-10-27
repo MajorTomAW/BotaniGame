@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BotaniWeaponAbility.h"
-#include "Inventory/Definitions/WeaponModes/WeaponMode_RangedWeapon.h"
+#include "Inventory/Weapons/Modes/WeaponMode_RangedWeapon.h"
 #include "BotaniRangedWeaponAbility.generated.h"
 
 /**

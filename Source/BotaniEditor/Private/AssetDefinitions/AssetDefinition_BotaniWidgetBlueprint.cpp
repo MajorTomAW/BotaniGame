@@ -15,7 +15,7 @@ UAssetDefinition_BotaniWidgetBlueprint::UAssetDefinition_BotaniWidgetBlueprint()
 
 FText UAssetDefinition_BotaniWidgetBlueprint::GetAssetDisplayName() const
 {
-	return LOCTEXT("AssetTypeActions_WidgetBlueprint", "Botani Widget Blueprint");
+	return LOCTEXT("AssetTypeActions_WidgetBlueprint", "Botani Widget");
 }
 
 FLinearColor UAssetDefinition_BotaniWidgetBlueprint::GetAssetColor() const

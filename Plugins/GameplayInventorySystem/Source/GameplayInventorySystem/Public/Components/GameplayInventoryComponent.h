@@ -21,4 +21,7 @@ class GAMEPLAYINVENTORYSYSTEM_API UGameplayInventoryComponent : public UActorCom
 protected:
 	/** Returns true if the owning actor has authority */
 	virtual bool IsOwnerActorAuthoritative() const;
+
+	/** Returns the owner as a pawn or tries to get the pawn whatever the owner is. */
+	virtual APawn* GetOwnerPawn() const;
 };

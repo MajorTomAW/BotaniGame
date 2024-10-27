@@ -176,7 +176,10 @@ AActor* ABotaniGameModeBase::ChoosePlayerStart_Implementation(AController* Playe
 	
 	if (DeterminePlayerStartSpot.IsBound())
 	{
-		return DeterminePlayerStartSpot.Execute(Player);
+		if (AActor* PotStartSpot = DeterminePlayerStartSpot.Execute(Player))
+		{
+			return PotStartSpot;
+		}
 	}
 	
 	return Super::ChoosePlayerStart_Implementation(Player);

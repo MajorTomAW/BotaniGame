@@ -11,6 +11,18 @@ UBotaniWeaponItemInstance::UBotaniWeaponItemInstance(const FObjectInitializer& O
 {
 }
 
+float UBotaniWeaponItemInstance::GetDistanceAttenuation(
+	float Distance, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags) const
+{
+	return 0.f;
+}
+
+float UBotaniWeaponItemInstance::GetPhysicalMaterialAttenuation(
+	const UPhysicalMaterial* PhysicalMaterial, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags) const
+{
+	return 0.f;
+}
+
 void UBotaniWeaponItemInstance::OnInstanceCreated(
 	const FGameplayInventoryItemSpecHandle& InHandle, const FGameplayInventoryItemContext* InItemContext)
 {

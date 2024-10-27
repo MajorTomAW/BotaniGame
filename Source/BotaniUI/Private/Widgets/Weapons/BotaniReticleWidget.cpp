@@ -5,6 +5,7 @@
 
 #include "Inventory/Instances/BotaniItemInstance.h"
 #include "Inventory/Instances/BotaniWeaponEquipmentInstance.h"
+#include "Inventory/Instances/BotaniWeaponItemInstance.h"
 
 UBotaniReticleWidget::UBotaniReticleWidget(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -14,11 +15,11 @@ UBotaniReticleWidget::UBotaniReticleWidget(const FObjectInitializer& ObjectIniti
 
 void UBotaniReticleWidget::InitializeFromWeapon(class UBotaniWeaponEquipmentInstance* InWeaponInstance)
 {
-	WeaponInstance = InWeaponInstance;
+	WeaponEquipmentInstance = InWeaponInstance;
 	InventoryInstance = nullptr;
-	if (WeaponInstance)
+	if (WeaponEquipmentInstance)
 	{
-		InventoryInstance = Cast<UBotaniItemInstance>(WeaponInstance->GetInstigator());
+		InventoryInstance = Cast<UBotaniItemInstance>(WeaponEquipmentInstance->GetInstigator());
 	}
 
 	OnWeaponInitialized_BP();
@@ -39,6 +40,20 @@ void UBotaniReticleWidget::RestartFadeTimer()
 
 	GetWorld()->GetTimerManager().SetTimer(FadeTimerHandle, FTimerDelegate::CreateUObject(this, &ThisClass::OnFadeOut_BP), FadeDuration, false);
 	OnFadeIn_BP();
+}
+
+float UBotaniReticleWidget::ComputeSpreadAngle() const
+{
+	if (const UBotaniWeaponEquipmentInstance* WeaponEquipment = Cast<UBotaniWeaponEquipmentInstance>(WeaponEquipmentInstance))
+	{
+		constexpr float BaseSpreadAngle = 5.f;
+		const float SpreadAngleMultiplier = WeaponEquipment->GetCalculatedSpreadAngleMultiplier();
+		const float ActualSpreadAngle = BaseSpreadAngle * SpreadAngleMultiplier;
+
+		return ActualSpreadAngle;
+	}
+
+	return 0.f;
 }
 
 void UBotaniReticleWidget::NativeConstruct()
