@@ -48,7 +48,7 @@ public:
 	 * @param Context		Context for the item.
 	 * @return					True if the item can be added
 	 */
-	UFUNCTION(BlueprintNativeEvent, Category = "Inventory|Item", meta = (DisplayName = "Can Add Item"))
+	UFUNCTION(BlueprintNativeEvent, Category = "Inventory|Item", meta = (DisplayName = "Can Add Item", ScriptName = "CanAddItemDef"))
 	bool K2_CanAddItemDef(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context);
 	
 	virtual bool CanAddItemFullyToExisting(const FGameplayInventoryItemSpec& ItemSpec, const FGameplayInventoryItemContext& Context, FGameplayInventoryItemSpec& ExistingSpec);
@@ -115,7 +115,7 @@ public:
 	 * @param Context	Context for the item, must contain item definition and stack count.
 	 * @return The item spec handle of the item that was given.
 	 */
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Inventory", meta = (DisplayName = "Give Item", AutoCreateRefTerm = "Context", Keywords = "add give item context"))
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Inventory", meta = (DisplayName = "Give Item", Keywords = "add give item context", ScriptName = "GiveItem"))
 	FGameplayInventoryItemSpecHandle K2_GiveItemFromContext(const FGameplayInventoryItemContext& Context);
 
 	/**

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/PawnComponent.h"
 #include "Net/Serialization/FastArraySerializer.h"
-#include "BotaniCharacterCosmeticsManager.generated.h"
+#include "BotaniCharacterCosmeticsSpawner.generated.h"
 
 class UBotaniCharacterDefinition;
 
@@ -17,12 +17,12 @@ struct FBotaniCharacterCosmeticHandle
 
 	void Reset()
 	{
-		CosmeticHandle = INDEX_NONE;
+		Handle = INDEX_NONE;
 	}
 
 	bool IsValid() const
 	{
-		return CosmeticHandle != INDEX_NONE;
+		return Handle != INDEX_NONE;
 	}
 
 private:
@@ -30,7 +30,7 @@ private:
 
 	/** The handle index */
 	UPROPERTY()
-	int32 CosmeticHandle = INDEX_NONE;
+	int32 Handle = INDEX_NONE;
 };
 
 /** A single applied character cosmetic part */
@@ -45,6 +45,7 @@ struct FBotaniAppliedCharacterCosmeticEntry : public FFastArraySerializerItem
 
 private:
 	friend struct FBotaniCharacterCosmeticList;
+	friend class UBotaniCharacterCosmeticsSpawner;
 
 	/** The character definition of the part */
 	UPROPERTY()
@@ -56,7 +57,7 @@ private:
 
 	/** The spawned instances of the cosmetic part (client only) */
 	UPROPERTY(NotReplicated)
-	TArray<TObjectPtr<UChildActorComponent>> SpawnedComponents;
+	TArray<TObjectPtr<USceneComponent>> SpawnedComponents;
 };
 
 /** Replicated list of applied character cosmetic parts */
@@ -83,9 +84,9 @@ struct FBotaniCharacterCosmeticList : public FFastArraySerializer
 
 public:
 	//~ Begin FFastArraySerializer interface
-	virtual void PostReplicatedAdd(const TArrayView<int32> AddedIndices, int32 FinalSize);
-	virtual void PostReplicatedChange(const TArrayView<int32> ChangedIndices, int32 FinalSize);
-	virtual void PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize);
+	void PostReplicatedAdd(const TArrayView<int32> AddedIndices, int32 FinalSize);
+	void PostReplicatedChange(const TArrayView<int32> ChangedIndices, int32 FinalSize);
+	void PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize);
 
 	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParms)
 	{
@@ -94,7 +95,7 @@ public:
 	//~ End FFastArraySerializer interface
 
 	/** Called to add a new cosmetic part to the list and equip it on the owning pawn. */
-	FBotaniCharacterCosmeticHandle AddEntry(UBotaniCharacterDefinition* NewCosmetic);
+	FBotaniCharacterCosmeticHandle AddEntry(const UBotaniCharacterDefinition* NewCosmetic);
 
 	/** Called to remove a previously added cosmetic part from the list and unequip it from the owning pawn. */
 	void RemoveEntry(FBotaniCharacterCosmeticHandle Handle);
@@ -135,12 +136,12 @@ struct TStructOpsTypeTraits<FBotaniCharacterCosmeticList> : public TStructOpsTyp
 };
 
 /**
- * UBotaniCharacterCosmeticsManager
+ * UBotaniCharacterCosmeticsSpawner
  *
  * A pawn component that handles spawning cosmetic elements to the owner pawn and all clients.
  */
 UCLASS(meta = (BlueprintSpawnableComponent))
-class UBotaniCharacterCosmeticsManager : public UPawnComponent
+class UBotaniCharacterCosmeticsSpawner : public UPawnComponent
 {
 	GENERATED_UCLASS_BODY()
 
@@ -150,6 +151,27 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void OnRegister() override;
 	//~ End UActorComponent interface
+	
+	/** Called to add a new character definition to the pawn that owns this cosmetics spawner. */
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Botani|Cosmetics")
+	FBotaniCharacterCosmeticHandle AddCharacterDefinition(const UBotaniCharacterDefinition* NewCosmetic);
+	
+	/** Removes a previously added character definition from the pawn that owns this cosmetics spawner. */
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Botani|Cosmetics")
+	void RemoveCharacterDefinition(FBotaniCharacterCosmeticHandle Handle);
+	
+	/** Removes all added character definitions from the pawn that owns this cosmetics spawner. */
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Botani|Cosmetics")
+	void RemoveAllCharacterDefinitions();
+	
+	/** The default animation instance to use for the pawn */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Botani|Cosmetics")
+	TSoftClassPtr<UAnimInstance> DefaultAnimationInstance;
+	
+	/** List of default character definitions always added to the pawn */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Botani|Cosmetics")
+	TArray<TObjectPtr<UBotaniCharacterDefinition>> DefaultCharacterDefinitions;
+	
 protected:
 private:
 	/** Replicated list of applied character cosmetic parts */

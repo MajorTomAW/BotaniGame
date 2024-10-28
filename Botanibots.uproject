@@ -403,6 +403,10 @@
 		{
 			"Name": "BioTools",
 			"Enabled": true
+		},
+		{
+			"Name": "AIUtilities",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [
