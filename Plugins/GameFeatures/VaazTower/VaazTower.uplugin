@@ -1,0 +1,64 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Vaaz Tower",
+	"Description": "Alpha-Prototyp Map",
+	"Category": "Game Features",
+	"CreatedBy": "Sebastian",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": false,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"ExplicitlyLoaded": true,
+	"BuiltInInitialFeatureState": "Registered",
+	"EditorCustomVirtualPath": "GameFeatures/Alpha",
+	"NoCode": true,
+	"Plugins": [
+		{
+			"Name": "BioCore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioGame",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevices",
+			"Enabled": true
+		},
+		{
+			"Name": "BioFrontend",
+			"Enabled": true
+		},
+		{
+			"Name": "PrototypeAssets",
+			"Enabled": true
+		},
+		{
+			"Name": "AICore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_PlayerStart",
+			"Enabled": true
+		},
+		{
+			"Name": "BioTools",
+			"Enabled": true
+		},
+		{
+			"Name": "BioWeapons",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_AISpawner",
+			"Enabled": true
+		}
+	]
+}
