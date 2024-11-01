@@ -24,4 +24,11 @@ protected:
 
 	/** Returns the owner as a pawn or tries to get the pawn whatever the owner is. */
 	virtual APawn* GetOwnerPawn() const;
+
+	/** Returns the owner as a pawn or tries to get the pawn whatever the owner is. */
+	template <typename T>
+	T* GetOwnerPawn() const
+	{
+		return Cast<T>(GetOwnerPawn());
+	}
 };

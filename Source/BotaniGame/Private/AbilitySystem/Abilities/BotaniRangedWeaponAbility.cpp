@@ -6,7 +6,7 @@
 #include "BotaniLogChannels.h"
 #include "GameplayTags/BotaniGameplayTags.h"
 #include "Inventory/Definitions/BotaniWeaponDefinition.h"
-#include "Inventory/Weapons/Modes/WeaponMode_RangedWeapon.h"
+#include "Weapons/Modes/WeaponMode_RangedWeapon.h"
 #include "Inventory/Instances/BotaniItemInstance.h"
 #include "Inventory/Instances/BotaniWeaponEquipmentInstance.h"
 

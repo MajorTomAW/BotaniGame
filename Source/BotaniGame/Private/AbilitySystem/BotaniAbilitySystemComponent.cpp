@@ -2,6 +2,8 @@
 
 
 #include "AbilitySystem/BotaniAbilitySystemComponent.h"
+
+#include "BotaniLogChannels.h"
 #include "GameplayTags/BotaniGameplayTags.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BotaniAbilitySystemComponent)
@@ -94,8 +96,9 @@ void UBotaniAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& I
 		{
 			InputHeldSpecHandles.Add(AbilitySpec.Handle);
 		}
-		else if (AbilityCDO->GetActivationPolicy() == EBotaniAbilityActivationPolicy::OnInputTriggered)
+		else // if (AbilityCDO->GetActivationPolicy() == EBotaniAbilityActivationPolicy::OnInputTriggered)
 		{
+			//TODO: Should count as pressed if input triggered or on spawn policy to make sure both policies work with input?
 			InputPressedSpecHandles.Add(AbilitySpec.Handle);
 		}
 	}
@@ -285,14 +288,54 @@ bool UBotaniAbilitySystemComponent::IsActivationGroupBlocked(EBotaniAbilityActiv
 
 void UBotaniAbilitySystemComponent::AddAbilityToActivationGroup(EBotaniAbilityActivationGroup Group, UBotaniGameplayAbility* BotaniAbility)
 {
+	check(BotaniAbility);
+	check(ActivationGroupCounts[(uint8)Group] < INT32_MAX);
+
+	ActivationGroupCounts[(uint8)Group]++;
+
+	const bool bReplicateCancelAbility = false;
+	
+	switch (Group)
+	{
+	case EBotaniAbilityActivationGroup::Independent:
+		{
+			break;
+		}
+	case EBotaniAbilityActivationGroup::Exclusive_Replaceable:
+	case EBotaniAbilityActivationGroup::Exclusive_Blocking:
+		{
+			CancelActivationGroupAbilities(EBotaniAbilityActivationGroup::Exclusive_Replaceable, BotaniAbility, bReplicateCancelAbility);
+			break;
+		}
+	default:
+		{
+			checkf(false, TEXT("[%hs] Multiple exclusive abilities are running."), __FUNCTION__);
+		}
+	}
+
+	const int32 ExclusiveCount = ActivationGroupCounts[(uint8)EBotaniAbilityActivationGroup::Exclusive_Replaceable] + ActivationGroupCounts[(uint8)EBotaniAbilityActivationGroup::Exclusive_Blocking];
+	if (!ensure(ExclusiveCount <= 1))
+	{
+		BOTANI_GAS_LOG(Error, TEXT("Multiple exclusive abilities are running."));
+	}
 }
 
 void UBotaniAbilitySystemComponent::RemoveAbilityFromActivationGroup(EBotaniAbilityActivationGroup Group, UBotaniGameplayAbility* BotaniAbility)
 {
+	check(BotaniAbility);
+	check(ActivationGroupCounts[(uint8)Group] > 0);
+
+	ActivationGroupCounts[(uint8)Group]--;
 }
 
 void UBotaniAbilitySystemComponent::CancelActivationGroupAbilities(EBotaniAbilityActivationGroup Group, UBotaniGameplayAbility* IgnoreBotaniAbility, bool bReplicateCancelAbility)
 {
+	auto ShouldCancelFunc = [this, Group, IgnoreBotaniAbility] (const UBotaniGameplayAbility* BotaniAbility, FGameplayAbilitySpecHandle Handle)
+	{
+		return ((BotaniAbility->GetActivationGroup() == Group) && (BotaniAbility != IgnoreBotaniAbility));	
+	};
+
+	CancelAbilitiesByFunc(ShouldCancelFunc, bReplicateCancelAbility);
 }
 
 void UBotaniAbilitySystemComponent::DeferredSetBaseAttributeValueFromReplication(const FGameplayAttribute& Attribute, float NewValue)

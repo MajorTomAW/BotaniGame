@@ -5,7 +5,7 @@
 
 #include "Character/Components/Movement/BotaniMovementComponent.h"
 #include "Inventory/Definitions/BotaniWeaponDefinition.h"
-#include "Inventory/Weapons/Modes/WeaponMode_RangedWeapon.h"
+#include "Weapons/Modes/WeaponMode_RangedWeapon.h"
 #include "Net/UnrealNetwork.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BotaniWeaponEquipmentInstance)

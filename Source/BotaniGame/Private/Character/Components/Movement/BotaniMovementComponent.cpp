@@ -52,6 +52,8 @@ UBotaniMovementComponent::UBotaniMovementComponent(const FObjectInitializer& Obj
 	WallJump_Force = 420.f;
 	WallJump_ArcadeForce = FVector::ZeroVector;
 
+	// Crouching
+	bPrevWantsToCrouch = false;
 
 	// Sliding
 	SlideBlockedTags.AddTag(BotaniGameplayTags::Movement::Modifier::TAG_MovementModifier_BlockSliding);
@@ -83,6 +85,7 @@ UBotaniMovementComponent::UBotaniMovementComponent(const FObjectInitializer& Obj
 	Grapple_PullForce = 0.f;
 	Grapple_MaxSpeed = 1000.f;
 	Grapple_SurfaceFrictionFactor = 0.4f;
+	GrappleRopeLength = 0.f;
 	
 	Grapple_RopeConfig.Grapple_RopeLength = 1500.f;
 	Grapple_RopeConfig.Grapple_RopeElasticity = 0.f;
@@ -213,7 +216,19 @@ void UBotaniMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSec
 		SetMovementMode(MOVE_Falling);
 	}
 
-	if (!IsSliding() && CanSlideInCurrentState() && BotaniCharacterOwner->bWantsToSlide)
+	if (MovementMode == MOVE_Walking && !bWantsToCrouch && bPrevWantsToCrouch)
+	{
+		if (!IsSliding() && CanSlideInCurrentState())
+		{
+			SetCustomMovementMode(CMOVE_Slide);
+		}
+	}
+	else if (IsCustomMovementMode(CMOVE_Slide) && !bWantsToCrouch)
+	{
+		SetMovementMode(MOVE_Walking);
+	}
+
+	/*if (!IsSliding() && CanSlideInCurrentState() && BotaniCharacterOwner->bWantsToSlide)
 	{
 		BOTANI_MOVEMENT_LOG(Warning, TEXT("UBotaniMovementComponent::UpdateCharacterStateBeforeMovement: Entering slide."));
 		
@@ -222,7 +237,7 @@ void UBotaniMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSec
 	else if (IsCustomMovementMode(CMOVE_Slide) && !BotaniCharacterOwner->bWantsToSlide)
 	{
 		SetMovementMode(MOVE_Walking);
-	}
+	}*/
 
 	if (IsFalling())
 	{
@@ -235,6 +250,11 @@ void UBotaniMovementComponent::UpdateCharacterStateBeforeMovement(float DeltaSec
 void UBotaniMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
 {
 	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
+
+	if (PreviousMovementMode == MOVE_Custom && PreviousCustomMode == CMOVE_Slide)
+	{
+		ExitSliding();
+	}
 
 	if (IsCustomMovementMode(CMOVE_Slide))
 	{
@@ -256,6 +276,13 @@ void UBotaniMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovem
 		GetWorld()->LineTraceSingleByChannel(WallHit, Start, End, ECC_Camera, QueryParams);
 		WallRunSide = DetermineWallSide(WallHit.ImpactNormal);
 	}
+}
+
+void UBotaniMovementComponent::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
+{
+	Super::OnMovementUpdated(DeltaSeconds, OldLocation, OldVelocity);
+
+	bPrevWantsToCrouch = bWantsToCrouch;
 }
 
 FRotator UBotaniMovementComponent::GetDeltaRotation(float DeltaTime) const
@@ -339,6 +366,11 @@ float UBotaniMovementComponent::GetMaxBrakingDeceleration() const
 bool UBotaniMovementComponent::IsMovingOnGround() const
 {
 	return Super::IsMovingOnGround() || IsCustomMovementMode(CMOVE_Slide);
+}
+
+bool UBotaniMovementComponent::CanCrouchInCurrentState() const
+{
+	return Super::CanCrouchInCurrentState() && IsMovingOnGround();
 }
 
 bool UBotaniMovementComponent::CanAttemptJump() const
@@ -672,6 +704,7 @@ bool UBotaniMovementComponent::ExitSliding()
 
 void UBotaniMovementComponent::DoSlide()
 {
+	bWantsToCrouch = true;
 	if (bOrientRotationToMovement) bOrientRotationToMovement = false;
 
 	Velocity += Velocity.GetSafeNormal2D() * Slide_EnterImpulse;

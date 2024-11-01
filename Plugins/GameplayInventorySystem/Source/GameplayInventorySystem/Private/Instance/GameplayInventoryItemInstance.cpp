@@ -171,6 +171,18 @@ void UGameplayInventoryItemInstance::OnInstanceChanged(const FGameplayInventoryI
 {
 }
 
+FGameplayInventoryItemContext UGameplayInventoryItemInstance::GetItemContext() const
+{
+	UGameplayInventoryItemInstance* MutableThis = const_cast<UGameplayInventoryItemInstance*>(this);
+	FGameplayInventoryItemContext Context(MutableThis->GetOwningActor());
+	Context.InventoryComponent = GetOwnerComponent();
+	Context.ItemDefinition = ItemDefinition;
+	Context.ItemInstance = MutableThis;
+	Context.StackCount = GetCurrentStackCount();
+	Context.ContextTags = GetConstGameplayTags();
+	return Context;
+}
+
 int32 UGameplayInventoryItemInstance::GetCurrentStackCount() const
 {
 	const FGameplayInventoryItemSpec& Spec = *GetOwnerComponent()->FindItemSpecFromHandle(CurrentSpecHandle);

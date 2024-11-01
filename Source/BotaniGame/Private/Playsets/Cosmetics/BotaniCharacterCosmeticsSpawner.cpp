@@ -117,6 +117,11 @@ bool FBotaniCharacterCosmeticList::SpawnCosmeticForEntry(FBotaniAppliedCharacter
 		NewCosmetic->SetAnimInstanceClass(CosmeticsSpawner->DefaultAnimationInstance.LoadSynchronous());
 		NewCosmetic->SetOwnerNoSee(true);
 		NewCosmetic->SetCastHiddenShadow(true);
+
+		for (const auto& KVP : Entry.Cosmetic->ColorParameters)
+		{
+			NewCosmetic->SetVectorParameterValueOnMaterials(KVP.Key, FVector(KVP.Value));
+		}
 		
 		Entry.SpawnedComponents.Add(NewCosmetic);
 		bCreatedAnyActors = true;

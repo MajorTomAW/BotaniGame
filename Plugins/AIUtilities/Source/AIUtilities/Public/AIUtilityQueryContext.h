@@ -11,7 +11,7 @@
  *
  * Enum that represents the type of utility parameter.
  */
-UENUM(BlueprintType)
+UENUM(BlueprintType, meta = (DisplayName = "AI Utility Parameter Type"))
 enum class EAIUtilityParameterType : uint8
 {
 	Float = 0,
@@ -28,7 +28,7 @@ enum class EAIUtilityParameterType : uint8
  *
  * Struct that holds a single AI Utility parameter.
  */
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType, meta = (DisplayName = "AI Utility Parameter"))
 struct FAIUtilityParameter
 {
 	GENERATED_BODY()

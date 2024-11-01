@@ -1,7 +1,7 @@
 // Copyright © 2024 Botanibots Team. All rights reserved.
 
 
-#include "Inventory/Weapons/Modes/WeaponMode_RangedWeapon.h"
+#include "Weapons/Modes/WeaponMode_RangedWeapon.h"
 
 #include "GameplayTags/BotaniGameplayTags.h"
 #include "Instance/GameplayInventoryItemInstance.h"

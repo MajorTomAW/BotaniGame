@@ -13,6 +13,11 @@ namespace AIUtilityTags
 		AIUTILITIES_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_InputProvider);
 		AIUTILITIES_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_InputProvider_Distance);	
 	}
+
+	namespace Action
+	{
+		AIUTILITIES_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action);
+	}
 }
 
 class FAIUtilitiesModule : public IModuleInterface

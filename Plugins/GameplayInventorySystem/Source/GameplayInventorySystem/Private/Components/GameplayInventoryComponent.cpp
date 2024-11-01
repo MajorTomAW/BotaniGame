@@ -29,17 +29,17 @@ bool UGameplayInventoryComponent::IsOwnerActorAuthoritative() const
 
 APawn* UGameplayInventoryComponent::GetOwnerPawn() const
 {
-	if (APawn* Pawn = Cast<APawn>(GetOwner()))
+	if (APawn* Pawn = GetOwner<APawn>())
 	{
 		return Pawn;
 	}
 
-	if (AController* Controller = Cast<AController>(GetOwner()))
+	if (AController* Controller = GetOwner<AController>())
 	{
 		return Controller->GetPawn();
 	}
 
-	if (APlayerState* PlayerState = Cast<APlayerState>(GetOwner()))
+	if (APlayerState* PlayerState = GetOwner<APlayerState>())
 	{
 		return PlayerState->GetPawn();
 	}

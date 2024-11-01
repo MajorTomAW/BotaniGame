@@ -13,7 +13,7 @@ class UGameplayInventoryItemFragment;
  *
  * The base class for all items in the gameplay inventory system.
  */
-UCLASS(Abstract, BlueprintType, meta = (PrioritizeCategories = "Item", DisplayName = "Inventory Item Definition"), Config = Game, HideCategories = ("Placement", "Spawning", "Tags"))
+UCLASS(BlueprintType, meta = (PrioritizeCategories = "Item", DisplayName = "Inventory Item Definition"), Config = Game, HideCategories = ("Placement", "Spawning", "Tags"))
 class GAMEPLAYINVENTORYSYSTEM_API UGameplayInventoryItemDefinition : public UPlayset
 {
 	GENERATED_UCLASS_BODY()

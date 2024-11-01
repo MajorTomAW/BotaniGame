@@ -39,4 +39,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Slide", meta = (ClampMin = "0.0", ForceUnits = "cm/s"))
 	float SlideTiltInterpSpeed = 1.0f;
+
+private:
+	float CrouchOffset = 0.0f;
 };

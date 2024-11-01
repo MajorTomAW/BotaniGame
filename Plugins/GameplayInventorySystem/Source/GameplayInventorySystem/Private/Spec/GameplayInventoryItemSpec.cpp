@@ -78,6 +78,16 @@ int32 FGameplayInventoryItemSpec::GetMaxStackCount() const
 	return Item->StackingData.MaxStackSize;
 }
 
+FGameplayInventoryItemContext FGameplayInventoryItemSpec::GetItemContext() const
+{
+	if (ensure(Instance))
+	{
+		return Instance->GetItemContext();
+	}
+
+	return FGameplayInventoryItemContext();
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// FGameplayInventoryItemContainer
 

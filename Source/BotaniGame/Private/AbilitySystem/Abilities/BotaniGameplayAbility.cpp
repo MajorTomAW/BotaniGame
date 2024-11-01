@@ -146,6 +146,59 @@ void UBotaniGameplayAbility::TryActivateAbilityOnSpawn(const FGameplayAbilityAct
 	}
 }
 
+bool UBotaniGameplayAbility::CanChangeActivationGroup(EBotaniAbilityActivationGroup NewGroup) const
+{
+	if (!IsInstantiated() || !IsActive())
+	{
+		return false;
+	}
+
+	if (ActivationGroup == NewGroup)
+	{
+		return true;
+	}
+
+	UBotaniAbilitySystemComponent* BotaniASC = GetBotaniAbilitySystemComponent();
+	check(BotaniASC);
+
+	// The ability can't change the activation group if it is blocked (unless it is the one doing the blocking).
+	if ((ActivationGroup != EBotaniAbilityActivationGroup::Exclusive_Blocking) && BotaniASC->IsActivationGroupBlocked(NewGroup))
+	{
+		return false;
+	}
+
+	// The ability can't become replaceable if it can't be canceled.
+	if ((NewGroup == EBotaniAbilityActivationGroup::Exclusive_Replaceable) && !CanBeCanceled())
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool UBotaniGameplayAbility::ChangeActivationGroup(EBotaniAbilityActivationGroup NewGroup)
+{
+	ENSURE_ABILITY_IS_INSTANTIATED_OR_RETURN(ChangeActivationGroup, false);
+
+	if (!CanChangeActivationGroup(NewGroup))
+	{
+		return false;
+	}
+
+	if (ActivationGroup != NewGroup)
+	{
+		UBotaniAbilitySystemComponent* BotaniASC = GetBotaniAbilitySystemComponent();
+		check(BotaniASC);
+
+		BotaniASC->RemoveAbilityFromActivationGroup(ActivationGroup, this);
+		BotaniASC->AddAbilityToActivationGroup(NewGroup, this);
+		
+		ActivationGroup = NewGroup;
+	}
+
+	return true;
+}
+
 void UBotaniGameplayAbility::SetCameraMode(TSubclassOf<class UBotaniCameraMode> CameraMode)
 {
 	ENSURE_ABILITY_IS_INSTANTIATED_OR_RETURN(SetCameraMode, );

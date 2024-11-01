@@ -5,6 +5,7 @@
 
 #include "Character/BotaniCharacter.h"
 #include "Character/Components/Movement/BotaniMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Engine/Canvas.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -56,8 +57,16 @@ void UCameraMode_DefaultFirstPerson::UpdateView(float DeltaTime)
 				const FVector RotatedOffset = SlideCameraOffset.RotateAngleAxis(PivotRotation.Yaw, FVector::UpVector);
 				SlideTilt = RotatedOffset.Z;
 			}
+
+			// If the character is crouching, move the camera down
+			CrouchOffset = 0.0f;
+			if (BotaniCharacter->GetMovementComponent()->IsCrouching())
+			{
+				CrouchOffset = -BotaniCharacter->GetBotaniMoveComp()->GetCrouchedHalfHeight(); // - BotaniCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+				//CrouchOffset = FMath::FInterpTo(CrouchOffset, Offset, DeltaTime, SlideTiltInterpSpeed);
+			}
 			
-			View.Location.Z = UKismetMathLibrary::FInterpTo(OldLoc.Z, PivotLocation.Z + SlideTilt, DeltaTime, SlideTiltInterpSpeed);	
+			View.Location.Z = UKismetMathLibrary::FInterpTo(OldLoc.Z, PivotLocation.Z + SlideTilt + CrouchOffset, DeltaTime, SlideTiltInterpSpeed);	
 		}
 	}
 }
@@ -72,4 +81,6 @@ void UCameraMode_DefaultFirstPerson::DrawDebug(UCanvas* Canvas) const
 	DisplayDebugManager.SetDrawColor(FColor::White);
 	DisplayDebugManager.DrawString(FString::Printf(TEXT("		Camera Tilt: %s (%f)"), *GetName(), View.Rotation.Roll));
 	DisplayDebugManager.DrawString(FString::Printf(TEXT("		Wall Run Tilt: %s (%f)"), *GetName(), WallRunCameraTiltAngle));
+	DisplayDebugManager.DrawString(FString::Printf(TEXT("		Slide Tilt: %s (%f)"), *GetName(), SlideCameraOffset.Z));
+	DisplayDebugManager.DrawString(FString::Printf(TEXT("		Crouch Offset: %s (%f)"), *GetName(), CrouchOffset));
 }

@@ -59,6 +59,10 @@ public:
 	GAMEPLAYINVENTORYSYSTEM_API virtual void OnInstanceChanged(const FGameplayInventoryItemSpecHandle& InHandle, const FGameplayInventoryItemContext* InItemContext = nullptr);
 
 public:
+	/** Returns the current context of this item instance */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
+	GAMEPLAYINVENTORYSYSTEM_API virtual FGameplayInventoryItemContext GetItemContext() const;
+	
 	/** Returns the stack count of this instance in the inventory */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
 	GAMEPLAYINVENTORYSYSTEM_API virtual int32 GetCurrentStackCount() const;

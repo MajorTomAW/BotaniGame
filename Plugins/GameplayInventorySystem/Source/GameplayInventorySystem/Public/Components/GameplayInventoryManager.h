@@ -182,7 +182,11 @@ public:
 
 	/** Creates and returns a new item context */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory", meta = (DefaultToSelf = "Instigator"))
-	FGameplayInventoryItemContext MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, int32 StackCount = -1, AActor* Instigator = nullptr, FGameplayTagContainer ContextTags = FGameplayTagContainer());
+	FGameplayInventoryItemContext MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, int32 StackCount = -1, UObject* Instigator = nullptr, FGameplayTagContainer ContextTags = FGameplayTagContainer());
+
+	/** Tries to find the item context associated with the given handle */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory")
+	FGameplayInventoryItemContext FindItemContextFromHandle(const FGameplayInventoryItemSpecHandle& ItemHandle) const;
 
 	/**
 	 * Returns an inventory item spec from a handle.

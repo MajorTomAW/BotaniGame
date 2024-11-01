@@ -591,7 +591,7 @@ const TArray<UGameplayInventoryRowConfig*>& UGameplayInventoryManager::GetRowCon
 	return RowConfigs;
 }
 
-FGameplayInventoryItemContext UGameplayInventoryManager::MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, const int32 StackCount, AActor* Instigator, const FGameplayTagContainer ContextTags)
+FGameplayInventoryItemContext UGameplayInventoryManager::MakeItemContext(UGameplayInventoryItemDefinition* ItemDefinition, const int32 StackCount, UObject* Instigator, const FGameplayTagContainer ContextTags)
 {
 	FGameplayInventoryItemContext New(GetOwner());
 	New.ItemDefinition = ItemDefinition;
@@ -610,6 +610,24 @@ FGameplayInventoryItemContext UGameplayInventoryManager::MakeItemContext(UGamepl
 	}
 
 	return New;
+}
+
+FGameplayInventoryItemContext UGameplayInventoryManager::FindItemContextFromHandle(
+	const FGameplayInventoryItemSpecHandle& ItemHandle) const
+{
+	if (!ItemHandle.IsValid())
+	{
+		LOG_INVENTORY(Verbose, TEXT("FindItemContextFromHandle called with invalid item handle"));
+		return FGameplayInventoryItemContext();
+	}
+	
+	const FGameplayInventoryItemSpec& ItemSpec = *FindItemSpecFromHandle(ItemHandle);
+	if (ItemSpec.IsValid())
+	{
+		return ItemSpec.GetItemContext();
+	}
+
+	return FGameplayInventoryItemContext();
 }
 
 FGameplayInventoryItemSpec* UGameplayInventoryManager::FindItemSpecFromHandle(const FGameplayInventoryItemSpecHandle& ItemHandle) const

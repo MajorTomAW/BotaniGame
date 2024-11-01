@@ -118,6 +118,14 @@ public:
 	/** Tries to activate the ability when given */
 	virtual void TryActivateAbilityOnSpawn(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) const;
 
+	/** Returns true if the requested activation group is a valid transition. */
+	UFUNCTION(BlueprintCallable, BlueprintPure = false, Category = "Botani|Ability", meta = (ExpandBoolAsExecs = "ReturnValue"))
+	bool CanChangeActivationGroup(EBotaniAbilityActivationGroup NewGroup) const;
+
+	/** Attempts to change the activation group. Returns true if it successfully changed. */
+	UFUNCTION(BlueprintCallable, BlueprintPure = false, Category = "Botani|Ability", meta = (ExpandBoolAsExecs = "ReturnValue"))
+	bool ChangeActivationGroup(EBotaniAbilityActivationGroup NewGroup);
+
 	/** Sets the ability's camera mode. */
 	UFUNCTION(BlueprintCallable, Category = "Botani|Ability", meta = (DisplayName = "Set Camera Mode"))
 	void SetCameraMode(TSubclassOf<class UBotaniCameraMode> CameraMode);

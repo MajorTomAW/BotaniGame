@@ -174,6 +174,11 @@ void UGameplayEquipmentManager::UnequipItem(const FGameplayInventoryItemSpecHand
 void UGameplayEquipmentManager::EquipItemByHandle(const FGameplayInventoryItemSpecHandle& Handle, const FGameplayInventoryItemContext& ItemContext)
 {
 	UGameplayInventoryItemInstance* ItemInstance = ItemContext.ItemInstance;
+	if (ItemInstance == nullptr)
+	{
+		ItemInstance = Cast<UGameplayInventoryItemInstance>(ItemContext.Instigator);
+	}
+	
 	check(ItemInstance);
 
 	FGameplayInventoryItemContext Context = ItemContext;
@@ -268,6 +273,10 @@ void UGameplayEquipmentManager::CreateNewInstanceOfEquipment(FGameplayEquipmentS
 	check(InventoryManager);
 
 	FGameplayInventoryItemSpec* ItemSpec = InventoryManager->FindItemSpecFromHandle(Spec.Handle);
+	if (!ensure(ItemSpec))
+	{
+		return;
+	}
 	
 	UGameplayEquipmentDefinition* EquipmentDef = Spec.EquipmentDefinition;
 	check(EquipmentDef);

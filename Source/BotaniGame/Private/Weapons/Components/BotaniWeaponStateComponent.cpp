@@ -1,7 +1,7 @@
 // Copyright © 2024 Botanibots Team. All rights reserved.
 
 
-#include "Inventory/Weapons/Components/BotaniWeaponStateComponent.h"
+#include "Weapons/Components/BotaniWeaponStateComponent.h"
 
 #include "Inventory/Components/BotaniEquipmentManager.h"
 #include "Inventory/Instances/BotaniWeaponEquipmentInstance.h"

@@ -22,6 +22,15 @@ FText UAssetDefinition_InventoryDefinition::GetAssetDisplayName(const FAssetData
 	{
 		FString ClassName = Class->GetName();
 
+		if (UGameplayInventoryDeveloperSettings::Get()->ItemClassFilter.Contains(Class))
+		{
+			UClass* ParentClass = Class->GetSuperClass();
+			if (ParentClass)
+			{
+				return GetAssetDisplayName(FAssetData(ParentClass->GetDefaultObject()));
+			}
+		}
+
 		for (const FName& Key : UGameplayInventoryDeveloperSettings::Get()->KeywordFilter)
 		{
 			ClassName.RemoveFromStart(Key.ToString());
