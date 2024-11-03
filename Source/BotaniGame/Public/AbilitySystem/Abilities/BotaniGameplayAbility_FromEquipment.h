@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "BotaniGameplayAbility.h"
-#include "BotaniEquipmentAbility.generated.h"
+#include "BotaniGameplayAbility_FromEquipment.generated.h"
 
 /**
- * UBotaniEquipmentAbility
+ * UBotaniGameplayAbility_FromEquipment
  *
  * An ability granted by an associated equipment instance
  */
 UCLASS(meta = (ShortTooltip = "An ability granted by an associated equipment instance.", DisplayName = "Equipment Ability"))
-class BOTANIGAME_API UBotaniEquipmentAbility : public UBotaniGameplayAbility
+class BOTANIGAME_API UBotaniGameplayAbility_FromEquipment : public UBotaniGameplayAbility
 {
 	GENERATED_UCLASS_BODY()
 

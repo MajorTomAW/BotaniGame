@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BotaniWeaponAbility.h"
+#include "BotaniGameplayAbility_Weapon.h"
 #include "Weapons/Modes/WeaponMode_RangedWeapon.h"
-#include "BotaniRangedWeaponAbility.generated.h"
+#include "BotaniGameplayAbility_RangedWeapon.generated.h"
 
 /**
  * UBotaniRangeWeaponAbility
@@ -13,7 +13,7 @@
  * An ability granted by and associated with a ranged weapon instance.
  */
 UCLASS(MinimalAPI, meta = (ShortTooltip = "An ability granted by and associated with a ranged weapon instance.", DisplayName = "Ranged Weapon Ability"))
-class UBotaniRangedWeaponAbility : public UBotaniWeaponAbility
+class UBotaniGameplayAbility_RangedWeapon : public UBotaniGameplayAbility_Weapon
 {
 	GENERATED_UCLASS_BODY()
 

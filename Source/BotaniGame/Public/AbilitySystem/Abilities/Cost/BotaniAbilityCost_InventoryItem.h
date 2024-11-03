@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "BotaniAbilityCost.h"
-#include "AbilityCost_InventoryItem.generated.h"
+#include "BotaniAbilityCost_InventoryItem.generated.h"
 
 
 /**
- * UAbilityCost_InventoryItem
+ * UBotaniAbilityCost_InventoryItem
  *
  * Represents a cost that requires an inventory item to be consumed.
  */
 UCLASS(meta = (DisplayName = "Inventory Item"))
-class UAbilityCost_InventoryItem : public UBotaniAbilityCost
+class UBotaniAbilityCost_InventoryItem : public UBotaniAbilityCost
 {
 	GENERATED_UCLASS_BODY()
 

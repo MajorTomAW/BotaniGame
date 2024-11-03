@@ -1,7 +1,7 @@
 // Copyright © 2024 Botanibots Team. All rights reserved.
 
 
-#include "AbilitySystem/Abilities/BotaniRangedWeaponAbility.h"
+#include "AbilitySystem/Abilities/BotaniGameplayAbility_RangedWeapon.h"
 
 #include "BotaniLogChannels.h"
 #include "GameplayTags/BotaniGameplayTags.h"
@@ -10,7 +10,7 @@
 #include "Inventory/Instances/BotaniItemInstance.h"
 #include "Inventory/Instances/BotaniWeaponEquipmentInstance.h"
 
-UBotaniRangedWeaponAbility::UBotaniRangedWeaponAbility(const FObjectInitializer& ObjectInitializer)
+UBotaniGameplayAbility_RangedWeapon::UBotaniGameplayAbility_RangedWeapon(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	// AbilityTags.AddTag(BotaniGameplayTags::Ac)
@@ -18,13 +18,13 @@ UBotaniRangedWeaponAbility::UBotaniRangedWeaponAbility(const FObjectInitializer&
 	SourceBlockedTags.AddTag(BotaniGameplayTags::Gameplay::TAG_Gameplay_AbilityInputBlocked);
 }
 
-const UWeaponMode_RangedWeapon* UBotaniRangedWeaponAbility::GetActiveRangedWeaponMode() const
+const UWeaponMode_RangedWeapon* UBotaniGameplayAbility_RangedWeapon::GetActiveRangedWeaponMode() const
 {
 	const UBotaniWeaponMode* ActiveMode = GetActiveWeaponMode();
 	return ActiveMode ? Cast<UWeaponMode_RangedWeapon>(ActiveMode) : nullptr;
 }
 
-FBotaniWeaponStatData UBotaniRangedWeaponAbility::GetRangedWeaponModeStats(bool& Success) const
+FBotaniWeaponStatData UBotaniGameplayAbility_RangedWeapon::GetRangedWeaponModeStats(bool& Success) const
 {
 	const UWeaponMode_RangedWeapon* Mode = GetActiveRangedWeaponMode();
 	if (Mode == nullptr)
@@ -37,7 +37,7 @@ FBotaniWeaponStatData UBotaniRangedWeaponAbility::GetRangedWeaponModeStats(bool&
 	return *Mode->WeaponStats.GetRow<FBotaniWeaponStatData>(TEXT(""));
 }
 
-bool UBotaniRangedWeaponAbility::CanActivateAbility(
+bool UBotaniGameplayAbility_RangedWeapon::CanActivateAbility(
 	const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
 	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
@@ -59,7 +59,7 @@ bool UBotaniRangedWeaponAbility::CanActivateAbility(
 	return bResult;
 }
 
-bool UBotaniRangedWeaponAbility::CheckCost(const FGameplayAbilitySpecHandle Handle,
+bool UBotaniGameplayAbility_RangedWeapon::CheckCost(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo, FGameplayTagContainer* OptionalRelevantTags) const
 {
 	if (!Super::CheckCost(Handle, ActorInfo, OptionalRelevantTags))
@@ -86,7 +86,7 @@ bool UBotaniRangedWeaponAbility::CheckCost(const FGameplayAbilitySpecHandle Hand
 	return AvailableAmmo >= AmmoCost;
 }
 
-void UBotaniRangedWeaponAbility::ApplyCost(const FGameplayAbilitySpecHandle Handle,
+void UBotaniGameplayAbility_RangedWeapon::ApplyCost(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);

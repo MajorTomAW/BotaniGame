@@ -1,7 +1,7 @@
 // Copyright © 2024 Botanibots Team. All rights reserved.
 
 
-#include "AbilitySystem/Abilities/Cost/AbilityCost_InventoryItem.h"
+#include "AbilitySystem/Abilities/Cost/BotaniAbilityCost_InventoryItem.h"
 
 #include "AbilitySystem/Abilities/BotaniGameplayAbility.h"
 #include "Inventory/Components/BotaniInventoryManager.h"
@@ -9,13 +9,13 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BotaniWeaponItemInstance)
 
-UAbilityCost_InventoryItem::UAbilityCost_InventoryItem(const FObjectInitializer& ObjectInitializer)
+UBotaniAbilityCost_InventoryItem::UBotaniAbilityCost_InventoryItem(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	Quantity.SetValue(1.0f);
 }
 
-bool UAbilityCost_InventoryItem::CheckCost(
+bool UBotaniAbilityCost_InventoryItem::CheckCost(
 	const UBotaniGameplayAbility* Ability, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	FGameplayTagContainer* OptionalRelevantTags) const
 {
@@ -34,7 +34,7 @@ bool UAbilityCost_InventoryItem::CheckCost(
 	return false;
 }
 
-void UAbilityCost_InventoryItem::ApplyCost(const UBotaniGameplayAbility* Ability,
+void UBotaniAbilityCost_InventoryItem::ApplyCost(const UBotaniGameplayAbility* Ability,
 	const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo)
 {

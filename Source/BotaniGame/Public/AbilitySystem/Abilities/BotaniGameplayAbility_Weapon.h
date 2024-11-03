@@ -3,16 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BotaniEquipmentAbility.h"
+#include "BotaniGameplayAbility_FromEquipment.h"
 #include "Inventory/Definitions/BotaniWeaponDefinition.h"
-#include "BotaniWeaponAbility.generated.h"
+#include "BotaniGameplayAbility_Weapon.generated.h"
 
 class UBotaniWeaponItemInstance;
 /**
  * 
  */
 UCLASS(MinimalAPI, meta = (ShortTooltip = "An ability granted by and associated with a weapon instance.", DisplayName = "Weapon Ability"))
-class UBotaniWeaponAbility : public UBotaniEquipmentAbility
+class UBotaniGameplayAbility_Weapon : public UBotaniGameplayAbility_FromEquipment
 {
 	GENERATED_UCLASS_BODY()
 
@@ -52,25 +52,25 @@ protected:
 };
 
 template <typename T>
-const T* UBotaniWeaponAbility::GetWeaponDefinition() const
+const T* UBotaniGameplayAbility_Weapon::GetWeaponDefinition() const
 {
 	return Cast<T>(GetAssociatedItem());
 }
 
 template <typename T>
-T* UBotaniWeaponAbility::GetWeaponEquipmentInstance() const
+T* UBotaniGameplayAbility_Weapon::GetWeaponEquipmentInstance() const
 {
 	return Cast<T>(GetAssociatedEquipment());
 }
 
 template <typename T>
-T* UBotaniWeaponAbility::GetWeaponItemInstance() const
+T* UBotaniGameplayAbility_Weapon::GetWeaponItemInstance() const
 {
 	return Cast<T>(GetAssociatedItem());
 }
 
 template <typename T>
-const T* UBotaniWeaponAbility::GetActiveWeaponMode() const
+const T* UBotaniGameplayAbility_Weapon::GetActiveWeaponMode() const
 {
 	return GetActiveWeaponMode() ? Cast<T>(GetActiveWeaponMode()) : nullptr;
 }

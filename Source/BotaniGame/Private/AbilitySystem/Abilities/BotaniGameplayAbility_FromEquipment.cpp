@@ -1,7 +1,7 @@
 // Copyright © 2024 Botanibots Team. All rights reserved.
 
 
-#include "AbilitySystem/Abilities/BotaniEquipmentAbility.h"
+#include "AbilitySystem/Abilities/BotaniGameplayAbility_FromEquipment.h"
 
 #if WITH_EDITOR
 #include "Misc/DataValidation.h"
@@ -12,15 +12,15 @@
 #include "Inventory/Instances/BotaniItemInstance.h"
 #include "Library/InventorySystemBlueprintLibrary.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(BotaniEquipmentAbility)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BotaniGameplayAbility_FromEquipment)
 
-UBotaniEquipmentAbility::UBotaniEquipmentAbility(const FObjectInitializer& ObjectInitializer)
+UBotaniGameplayAbility_FromEquipment::UBotaniGameplayAbility_FromEquipment(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
-bool UBotaniEquipmentAbility::CanActivateAbility(
+bool UBotaniGameplayAbility_FromEquipment::CanActivateAbility(
 	const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
 	const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
@@ -44,7 +44,7 @@ bool UBotaniEquipmentAbility::CanActivateAbility(
 
 
 #if WITH_EDITOR
-EDataValidationResult UBotaniEquipmentAbility::IsDataValid(class FDataValidationContext& Context) const
+EDataValidationResult UBotaniGameplayAbility_FromEquipment::IsDataValid(class FDataValidationContext& Context) const
 {
 	EDataValidationResult Result = CombineDataValidationResults(Super::IsDataValid(Context), EDataValidationResult::Valid);
 
@@ -59,7 +59,7 @@ EDataValidationResult UBotaniEquipmentAbility::IsDataValid(class FDataValidation
 #endif
 
 
-UBotaniItemInstance* UBotaniEquipmentAbility::GetAssociatedItem() const
+UBotaniItemInstance* UBotaniGameplayAbility_FromEquipment::GetAssociatedItem() const
 {
 	UBotaniEquipmentInstance* Equipment = GetAssociatedEquipment();
 	if (Equipment != nullptr)
@@ -73,7 +73,7 @@ UBotaniItemInstance* UBotaniEquipmentAbility::GetAssociatedItem() const
 
 
 
-class UBotaniEquipmentInstance* UBotaniEquipmentAbility::GetAssociatedEquipment() const
+class UBotaniEquipmentInstance* UBotaniGameplayAbility_FromEquipment::GetAssociatedEquipment() const
 {
 	const FGameplayAbilitySpec* Spec = GetCurrentAbilitySpec();
 	if (Spec != nullptr)
@@ -85,7 +85,7 @@ class UBotaniEquipmentInstance* UBotaniEquipmentAbility::GetAssociatedEquipment(
 	return nullptr;
 }
 
-class UGameplayInventoryManager* UBotaniEquipmentAbility::GetInventoryManager() const
+class UGameplayInventoryManager* UBotaniGameplayAbility_FromEquipment::GetInventoryManager() const
 {
 	UGameplayInventoryManager* InventoryManager = UInventorySystemBlueprintLibrary::FindInventoryManager(GetControllerFromActorInfo());
 
@@ -97,7 +97,7 @@ class UGameplayInventoryManager* UBotaniEquipmentAbility::GetInventoryManager() 
 	return InventoryManager;
 }
 
-class UGameplayEquipmentManager* UBotaniEquipmentAbility::GetEquipmentManager() const
+class UGameplayEquipmentManager* UBotaniGameplayAbility_FromEquipment::GetEquipmentManager() const
 {
 	UGameplayEquipmentManager* EquipmentManager = UInventorySystemBlueprintLibrary::FindEquipmentManager(GetControllerFromActorInfo());
 

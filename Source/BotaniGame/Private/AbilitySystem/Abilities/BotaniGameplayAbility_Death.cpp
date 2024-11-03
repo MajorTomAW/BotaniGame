@@ -1,14 +1,14 @@
 // Copyright © 2024 Botanibots Team. All rights reserved.
 
 
-#include "AbilitySystem/Abilities/BotaniDeathAbility.h"
+#include "AbilitySystem/Abilities/BotaniGameplayAbility_Death.h"
 
 #include "BotaniLogChannels.h"
 #include "AbilitySystem/BotaniAbilitySystemComponent.h"
 #include "Character/Components/BotaniHealthComponent.h"
 #include "GameplayTags/BotaniGameplayTags.h"
 
-UBotaniDeathAbility::UBotaniDeathAbility(const FObjectInitializer& ObjectInitializer)
+UBotaniGameplayAbility_Death::UBotaniGameplayAbility_Death(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
@@ -26,7 +26,7 @@ UBotaniDeathAbility::UBotaniDeathAbility(const FObjectInitializer& ObjectInitial
 	}
 }
 
-void UBotaniDeathAbility::ActivateAbility(
+void UBotaniGameplayAbility_Death::ActivateAbility(
 	const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -43,7 +43,7 @@ void UBotaniDeathAbility::ActivateAbility(
 
 	if (!CanChangeActivationGroup(EBotaniAbilityActivationGroup::Exclusive_Blocking))
 	{
-		BOTANI_GAS_LOG(Error, TEXT("UBotaniDeathAbility::ActivateAbility: Ability [%s] failed to change activation group to blocking."), *GetName());
+		BOTANI_GAS_LOG(Error, TEXT("UBotaniGameplayAbility_Death::ActivateAbility: Ability [%s] failed to change activation group to blocking."), *GetName());
 	}
 
 	if (bAutoStartDeath)
@@ -54,7 +54,7 @@ void UBotaniDeathAbility::ActivateAbility(
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UBotaniDeathAbility::EndAbility(
+void UBotaniGameplayAbility_Death::EndAbility(
 	const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
@@ -64,12 +64,12 @@ void UBotaniDeathAbility::EndAbility(
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
-void UBotaniDeathAbility::StartDeathSequence()
+void UBotaniGameplayAbility_Death::StartDeathSequence()
 {
 	UBotaniHealthComponent* HealthComponent = UBotaniHealthComponent::FindHealthComponent(GetAvatarActorFromActorInfo());
 	if (HealthComponent == nullptr)
 	{
-		BOTANI_GAS_LOG(Error, TEXT("UBotaniDeathAbility::StartDeathSequence: Failed to find health component for actor %s."), *GetAvatarActorFromActorInfo()->GetName());
+		BOTANI_GAS_LOG(Error, TEXT("UBotaniGameplayAbility_Death::StartDeathSequence: Failed to find health component for actor %s."), *GetAvatarActorFromActorInfo()->GetName());
 		return;
 	}
 
@@ -79,12 +79,12 @@ void UBotaniDeathAbility::StartDeathSequence()
 	}
 }
 
-void UBotaniDeathAbility::FinishDeathSequence()
+void UBotaniGameplayAbility_Death::FinishDeathSequence()
 {
 	UBotaniHealthComponent* HealthComponent = UBotaniHealthComponent::FindHealthComponent(GetAvatarActorFromActorInfo());
 	if (HealthComponent == nullptr)
 	{
-		BOTANI_GAS_LOG(Error, TEXT("UBotaniDeathAbility::FinishDeathSequence: Failed to find health component for actor %s."), *GetAvatarActorFromActorInfo()->GetName());
+		BOTANI_GAS_LOG(Error, TEXT("UBotaniGameplayAbility_Death::FinishDeathSequence: Failed to find health component for actor %s."), *GetAvatarActorFromActorInfo()->GetName());
 		return;
 	}
 

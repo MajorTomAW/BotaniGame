@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BotaniGameplayAbility.h"
-#include "BotaniDeathAbility.generated.h"
+#include "BotaniGameplayAbility_Death.generated.h"
 
 
 /**
- * UBotaniDeathAbility
+ * UBotaniGameplayAbility_Death
  *
  * Gameplay ability used for handling death.
  * Activates automatically via the "GameplayEvent.Death" ability trigger tag.
  */
 UCLASS(Abstract)
-class UBotaniDeathAbility : public UBotaniGameplayAbility
+class UBotaniGameplayAbility_Death : public UBotaniGameplayAbility
 {
 	GENERATED_UCLASS_BODY()
 
