@@ -36,7 +36,7 @@ struct FAIUtilityParameter
 public:
 	/** The type of this parameter. */
 	UPROPERTY(EditDefaultsOnly, Category = "AI Utility")
-	EAIUtilityParameterType Type;
+	EAIUtilityParameterType Type = EAIUtilityParameterType::Float;
 
 	/** Literal float value of this parameter. */
 	UPROPERTY(EditDefaultsOnly, Category = "AI Utility", meta = (EditCondition = "Type == EAIUtilityParameterType::Float", EditConditionHides))

@@ -19,7 +19,10 @@ UBotaniCharacterModifier::UBotaniCharacterModifier(const FObjectInitializer& Obj
 	{
 		static FName FuncName = FName("GetEditorFriendlyName");
 		const UFunction* Func = FindFunction(FuncName);
+
+#if WITH_EDITORONLY_DATA
 		bHasBlueprintFriendlyName = ImplementedInBlueprint(Func);
+#endif
 	}
 	
 #if WITH_EDITORONLY_DATA

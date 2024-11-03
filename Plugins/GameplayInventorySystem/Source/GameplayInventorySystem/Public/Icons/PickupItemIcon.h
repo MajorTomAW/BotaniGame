@@ -41,17 +41,6 @@ protected:
 	/** The icon's display name to show in the editor. */
 	UPROPERTY(EditAnywhere, meta = (EditCondition = "false", EditConditionHides))
 	FString EditorFriendlyName;
-
-	/** Gets the editor-friendly name of the icon. */
-	UFUNCTION(BlueprintNativeEvent, Category = "Editor")
-	FString GetEditorFriendlyName() const;
-#endif
-
-#if WITH_EDITOR
-	//~ Begin UObject Interface
-	virtual void PostSaveRoot(FObjectPostSaveRootContext ObjectSaveContext) override;
-	virtual void PostCDOCompiled(const FPostCDOCompiledContext& Context) override;
-	//~ End UObject Interface
 #endif
 };
 

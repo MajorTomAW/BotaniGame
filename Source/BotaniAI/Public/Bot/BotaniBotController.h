@@ -13,22 +13,22 @@ UENUM(BlueprintType)
 enum EBotaniBotState
 {
 	/** The bot is unaware of any targets. */
-	BotState_Unaware = 1 << 0,
+	BotState_Unaware = 1 << 0 UMETA(DisplayName = "Unaware"),
 
 	/** The bot is suspicious and is investigating. */
-	BotState_Suspicious = 1 << 1,
+	BotState_Suspicious = 1 << 1 UMETA(DisplayName = "Suspicious"),
 
 	/** The bot has lost its target. */
-	BotState_LostTarget = 1 << 2,
+	BotState_LostTarget = 1 << 2 UMETA(DisplayName = "Lost Target"),
 
 	/** The bot is threatened and is attacking. */
-	BotState_Threatened = 1 << 3,
+	BotState_Threatened = 1 << 3 UMETA(DisplayName = "Threatened"),
 
 	/** The bot is patrolling. */
-	BotState_Patrolling = 1 << 4,
+	BotState_Patrolling = 1 << 4 UMETA(DisplayName = "Patrolling"),
 
 	/** The bot is in a custom state. */
-	BotState_None = 0
+	BotState_None = 0 UMETA(Hidden),
 };
 
 /**

@@ -7,6 +7,28 @@
 #include "BotaniWeaponDefinition.generated.h"
 
 /**
+ * FBotaniWeaponModSlot
+ */
+USTRUCT(BlueprintType)
+struct FBotaniWeaponModSlot
+{
+	GENERATED_BODY()
+
+public:
+	/** The default mod to use for this slot */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mod")
+	TObjectPtr<class UBotaniWeaponModDefinition> DefaultMod = nullptr;
+
+	/** Determines whether the player can change this slot */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mod")
+	uint32 bIsModLocked : 1 = false;
+
+	/** Determines whether this mod should be hidden from the player */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Mod")
+	uint32 bIsModHidden : 1 = false;
+};
+
+/**
  * FBotaniReticleWidget
  *
  * Stores data about a reticle widget.
@@ -62,7 +84,7 @@ public:
  *
  * A definition of a weapon mode that can be equipped by a player.
  */
-UCLASS(Abstract, BlueprintType, Const, EditInlineNew, DefaultToInstanced)
+UCLASS(Abstract, BlueprintType, Const, EditInlineNew, DefaultToInstanced, PrioritizeCategories = ("Weapon|Settings", "Settings"))
 class UBotaniWeaponMode : public UObject
 {
 	GENERATED_UCLASS_BODY()
@@ -70,12 +92,15 @@ class UBotaniWeaponMode : public UObject
 	
 public:
 	/** The tag that represents this weapon mode */
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon Mode")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Settings")
 	FGameplayTag WeaponModeTag;
 
 	/** List of ability sets that are granted when this weapon mode is equipped */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	TArray<TObjectPtr<class UBotaniAbilitySet>> AbilitySets;
+
+public:
+	virtual class UBotaniAmmoDefinition* GetAmmoToConsume() const { return nullptr; }
 
 protected:
 	virtual void OnModeActivated(APawn* Avatar, const class UBotaniWeaponDefinition* InWeaponDef, class UBotaniWeaponEquipmentInstance* InWeaponEquipmentInstance) const;
@@ -167,4 +192,12 @@ public:
 	 ******************************************************************************************************/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapon Modes", meta = (TitleProperty = "WeaponModeName"))
 	TArray<TObjectPtr<UBotaniWeaponMode>> WeaponModes;
+
+	/** Determines whether this weapon can use modifications */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Mods")
+	uint32 bCanUseMods : 1 = false;
+
+	/** List of mod slots that can be used by this weapon */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Mods", meta = (EditCondition = "bCanUseMods"))
+	TArray<FBotaniWeaponModSlot> ModSlots;
 };

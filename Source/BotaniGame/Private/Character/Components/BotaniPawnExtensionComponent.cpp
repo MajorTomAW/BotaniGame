@@ -131,7 +131,7 @@ bool UBotaniPawnExtensionComponent::CanChangeInitState(UGameFrameworkComponentMa
 			}
 		}
 
-		BOTANI_LOG(Log, TEXT("NOW CHANGING FROM SPAWNED TO AVAILABLE!"));
+		BOTANI_LOG(VeryVerbose, TEXT("NOW CHANGING FROM SPAWNED TO AVAILABLE!"));
 		return true;
 	}
 
@@ -144,7 +144,7 @@ bool UBotaniPawnExtensionComponent::CanChangeInitState(UGameFrameworkComponentMa
 
 		if (!bCanChange)
 		{
-			BOTANI_LOG(Warning, TEXT("Bot [%s] is not ready to transition to DataInitialized"), *Pawn->GetName());
+			BOTANI_LOG(Verbose, TEXT("Bot [%s] is not ready to transition to DataInitialized"), *Pawn->GetName());
 		}
 
 		return bCanChange;
@@ -191,7 +191,7 @@ void UBotaniPawnExtensionComponent::InitializeAbilitySystem(UBotaniAbilitySystem
 	if ((ExistingAvatar != nullptr) &&
 		(ExistingAvatar != Pawn))
 	{
-		BOTANI_LOG(Log, TEXT("Existing Avatar (authoriy=%d"), ExistingAvatar->HasAuthority() ? 1 : 0);
+		BOTANI_LOG(Log, TEXT("Existing Avatar (authoriy=%d)"), ExistingAvatar->HasAuthority() ? 1 : 0);
 
 		// There is already a pawn acting as the ASC's avatar, so we need to kick it out.
 		// This can happen on clients if they're lagged: their new pawn is spawned + possessed before the dead one is removed

@@ -3,7 +3,7 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "Inventory Core",
-	"Description": "",
+	"Description": "Game Feature plugin that adds logic for an Inventory System to the game.",
 	"Category": "Game Features",
 	"CreatedBy": "MajorT",
 	"CreatedByURL": "",
@@ -21,6 +21,10 @@
 	"Plugins": [
 		{
 			"Name": "BioFrontend",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayInventorySystem",
 			"Enabled": true
 		}
 	],

@@ -8,12 +8,23 @@
 
 class UBotaniAbilitySet;
 
+/**
+ * Inventory fragment that grants abilities when equipped.
+ */
 UCLASS(meta = (DisplayName = "Grant Ability Set"))
 class BOTANIGAME_API UInventoryFragment_GrantAbilitySet : public UGameplayInventoryItemFragment
 {
 	GENERATED_UCLASS_BODY()
 
 public:
+	/** Abilities to grant when this is equipped */
+	UPROPERTY(EditDefaultsOnly, Category = "Ability Set")
+	TArray<TSoftClassPtr<class UGameplayAbility>> AbilitiesToGrant;
+
+	/** Gameplay Effect to apply when this is equipped */
+	UPROPERTY(EditDefaultsOnly, Category = "Ability Set")
+	TArray<TSoftClassPtr<class UGameplayEffect>> EffectsToApply;
+	
 	/** Ability sets to grant when this is equipped */
 	UPROPERTY(EditDefaultsOnly, Category = "Ability Set")
 	TArray<TObjectPtr<UBotaniAbilitySet>> AbilitySetsToGrant;

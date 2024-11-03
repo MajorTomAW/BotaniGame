@@ -35,9 +35,34 @@ void UInventoryFragment_GrantAbilitySet::OnItemInstanceCreated(const FGameplayIn
 
 	UBotaniAbilitySystemComponent* BotaniASC = CastChecked<UBotaniAbilitySystemComponent>(ASC);
 
+	// Give ability sets
 	for (UBotaniAbilitySet* AbilitySet : AbilitySetsToGrant)
 	{
 		AbilitySet->GiveToAbilitySystem(BotaniASC, nullptr);
+	}
+
+	// Give abilities
+	for (auto AbilityClass : AbilitiesToGrant)
+	{
+		if (AbilityClass.IsNull())
+		{
+			continue;
+		}
+
+		FGameplayAbilitySpec NewSpec(AbilityClass.LoadSynchronous());
+		FGameplayAbilitySpecHandle Handle = BotaniASC->GiveAbility(NewSpec); 
+	}
+
+	// Apply effects
+	for (auto EffectClass : EffectsToApply)
+	{
+		if (EffectClass.IsNull())
+		{
+			continue;
+		}
+
+		FGameplayEffectSpecHandle SpecHandle = BotaniASC->MakeOutgoingSpec(EffectClass.LoadSynchronous(), 1.0f, BotaniASC->MakeEffectContext());
+		BotaniASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 	}
 }
 

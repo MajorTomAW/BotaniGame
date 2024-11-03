@@ -102,7 +102,7 @@ UGameplayInventoryItemInstance* UInventorySystemBlueprintLibrary::GetInventoryIt
 	const FGameplayInventoryItemSpec* ItemSpec = InventoryManager->FindItemSpecFromHandle(ItemHandle);
 	if (!ItemSpec)
 	{
-		LOG_INVENTORY(Error, TEXT("[%hs]: Called with an invalid item spec handle."), __FUNCTION__);
+		LOG_INVENTORY(VeryVerbose, TEXT("[%hs]: Called with an invalid item spec handle."), __FUNCTION__);
 		return nullptr;
 	}
 

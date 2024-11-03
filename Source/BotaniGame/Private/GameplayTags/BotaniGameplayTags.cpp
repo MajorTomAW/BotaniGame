@@ -75,6 +75,9 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Input::TAG_InputTag_3, "Input
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Input::TAG_InputTag_4, "Input.InputTag.4", "Input tag for the 4 key.");
 
 /** Ability Tags */
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Restrict::TAG_AbilityRestrict_Weapon_PrimaryFire, "Ability.Restrict.Weapon.PrimaryFire", "Restricts the primary fire ability.");
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Restrict::TAG_AbilityRestrict_Weapon_SecondaryFire, "Ability.Restrict.Weapon.SecondaryFire", "Restricts the secondary fire ability.");
+
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Behavior::TAG_Ability_Behavior_SurvivesDeath, "Ability.Behavior.SurvivesDeath", "The ability survives the death of the actor.");
 
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::ActivationFail::TAG_AbilityActivationFail_InvalidTarget, "Ability.ActivationFail.InvalidTarget", "The target of the ability is invalid.");
@@ -84,11 +87,15 @@ UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::ActivationFail::TAG_
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::ActivationFail::TAG_AbilityActivationFail_TagsBlocked, "Ability.ActivationFail.TagsBlocked", "The ability cannot be activated because the required tags are blocked.");
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::ActivationFail::TAG_AbilityActivationFail_TagsMissing, "Ability.ActivationFail.TagsMissing", "The ability cannot be activated because the required tags are missing.");
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::ActivationFail::TAG_AbilityActivationFail_FatalError, "Ability.ActivationFail.FatalError", "The ability cannot be activated due to a fatal error.");
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::ActivationFail::TAG_AbilityActivationFail_MagazineFull, "Ability.ActivationFail.MagazineFull", "The ability cannot be activated because the magazine is full.");
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::ActivationFail::TAG_AbilityActivationFail_OutOfAmmo, "Ability.ActivationFail.OutOfAmmo", "The ability cannot be activated because the actor is out of ammo.");
 
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Message::TAG_AbilityActivationFail_Message, "Ability.ActivationFail.Message", "The message to display when an ability activation fails.");
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Message::TAG_Damage_Message, "Ability.Message.Damage", "The message to display when damage is dealt.");
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Message::TAG_Healing_Message, "Ability.Message.Healing", "The message to display when healing is applied.");
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Message::TAG_Ammo_Message, "Ability.Message.Ammo", "The message to display when ammo is used.");
+
+UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Ability::Descriptor::Action::TAG_AbilityAction_Reload, "Ability.Descriptor.Action.Reload", "The action to reload the weapon.");
 
 /** Effect Tags */
 UE_DEFINE_GAMEPLAY_TAG_COMMENT(BotaniGameplayTags::Effect::SetByCaller::TAG_SetByCaller_Damage, "GameplayEffect.SetByCaller.Damage", "SetByCaller tag used by damage gameplay effects.");
