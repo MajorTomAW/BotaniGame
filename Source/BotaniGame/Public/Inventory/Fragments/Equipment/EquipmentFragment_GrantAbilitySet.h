@@ -22,6 +22,14 @@ public:
 	//~ End UGameplayEquipmentFragment Interface
 
 protected:
+	/** Abilities to grant when this is equipped */
+	UPROPERTY(EditDefaultsOnly, Category = "Ability Set")
+	TArray<TSoftClassPtr<class UGameplayAbility>> AbilitiesToGrant;
+
+	/** Gameplay Effect to apply when this is equipped */
+	UPROPERTY(EditDefaultsOnly, Category = "Ability Set")
+	TArray<TSoftClassPtr<class UGameplayEffect>> EffectsToApply;
+	
 	/** A list of ability sets to grant when this equipment is equipped. */
 	UPROPERTY(EditDefaultsOnly, Category = "Ability Set")
 	TArray<TObjectPtr<const class UBotaniAbilitySet>> AbilitySetsToGrant;
