@@ -1,23 +1,34 @@
-﻿{
+{
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "ThumbnailExtractor",
+	"FriendlyName": "Thumbnail Extractor",
 	"Description": "",
-	"Category": "Other",
+	"Category": "Editor",
 	"CreatedBy": "MajorT",
 	"CreatedByURL": "",
 	"DocsURL": "",
 	"MarketplaceURL": "",
-	"CanContainContent": true,
+	"CanContainContent": false,
 	"IsBetaVersion": true,
 	"IsExperimentalVersion": false,
 	"Installed": false,
 	"Modules": [
 		{
 			"Name": "ThumbnailExtractor",
-			"Type": "Runtime",
+			"Type": "Editor",
 			"LoadingPhase": "Default"
+		}
+	],
+	"SupportURL": "",
+	"Plugins": [
+		{
+			"Name": "EditorScriptingUtilities",
+			"Enabled": true
+		},
+		{
+			"Name": "GamePlaysets",
+			"Enabled": true
 		}
 	]
 }
