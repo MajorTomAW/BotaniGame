@@ -7,6 +7,19 @@
 #include "WeaponMode_RangedWeapon.generated.h"
 
 /**
+ * EBotaniWeaponReloadType
+ */
+UENUM(BlueprintType)
+enum class EBotaniWeaponReloadType : uint8
+{
+	/** Reloads the weapon's entire clip. */
+	ReloadWholeClip UMETA(DisplayName = "Reload Whole Clip"),
+
+	/** Reloads the weapon's clip one bullet at a time. */
+	ReloadIndividualBullets UMETA(DisplayName = "Reload Individual Bullets"),
+};
+
+/**
  * FBotaniWeaponSpreadData
  *
  * Stores data about the spread of a weapon.
@@ -97,6 +110,19 @@ struct FBotaniWeaponStatData : public FTableRowBase
 	GENERATED_BODY()
 
 public:
+#pragma region ammo
+	/** The size of an individual cartridge. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ammo", meta = (ClampMin = 1, UIMin = 1))
+	uint8 ClipSize = 0;
+
+	/** Determines whether the weapon should add initial clips to the player's inventory. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ammo", meta = (InlineEditConditionToggle))
+	uint32 bShouldAddInitialAmmo : 1 = true;
+
+	/** Amount of clips the weapon has initially. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ammo", meta = (ClampMin = 0, UIMin = 0, EditCondition = "bShouldAddInitialAmmo"))
+	uint8 InitialClips = 0;
+	
 	/** Bullets that are shot per cartridge. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ammo", meta = (ClampMin = 1, UIMin = 1))
 	uint8 BulletsPerCartridge = 1;
@@ -105,14 +131,46 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ammo", meta = (ClampMin = 0, UIMin = 0))
 	uint8 AmmoCostPerFire = 1;
 
+	/** The maximum ammo cost per fire. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ammo", meta = (ClampMin = 0, UIMin = 0))
+	uint8 MaxAmmoCostPerFire = 1;
+#pragma endregion
+#pragma region firing
 	/** The rate of fire. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing", meta = (ClampMin = 0.0f, UIMin = 0.0f, Units = "RevolutionsPerMinute"))
 	float FiringRate = 600.0f;
+
+	/** The rate of fire scale */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing", meta = (ClampMin = 0.0f, UIMin = 0.0f, Units = "x", DisplayName = "Rate of Fire Scale"))
+	float ROFScale = 1.0f;
+
+	/** The rate of fire scale when aiming down sights */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing", meta = (ClampMin = 0.0f, UIMin = 0.0f, Units = "x", DisplayName = "Rate of Fire Scale ADS"))
+	float ROFScaleADS = 1.0f;
 
 	/** The sweep radius. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing", meta = (ClampMin = 0.0f, UIMin = 0.0f, Units = "cm"))
 	float SweepRadius = 0.0f;
 
+#pragma endregion
+#pragma region reloading
+	/** The time it takes to reload the weapon. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Reloading", meta = (ClampMin = 0.0f, UIMin = 0.0f, Units = "s"))
+	float ReloadTime = 2.0f;
+
+	/** The rate of reload timescale */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Reloading", meta = (ClampMin = 0.0f, UIMin = 0.0f, Units = "x", DisplayName = "Reload Time Scale"))
+	float ReloadTimeScale = 1.0f;
+
+	/** The reload type of the weapon. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Reloading")
+	EBotaniWeaponReloadType ReloadType = EBotaniWeaponReloadType::ReloadWholeClip;
+
+	/** Determines whether the reloading can be interrupted. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Reloading")
+	uint32 bAllowReloadInterrupt : 1 = false;
+#pragma endregion
+	
 	/** The spread data. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon Data")
 	FBotaniWeaponSpreadData SpreadData;
@@ -131,12 +189,10 @@ struct FBotaniRangedWeaponAmmoData
 	/** The stat tag for the ammo. */
 	UPROPERTY(BlueprintReadOnly, Category = "Ammo", meta = (Categories = "Weapon.Stat"))
 	FGameplayTag StatTag;
-
-#if WITH_EDITORONLY_DATA
+	
 	/** The name of this stat. */
 	UPROPERTY(VisibleDefaultsOnly, Category = "Ammo")
 	FName StatName;
-#endif
 
 	/** The stack count of the ammo. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ammo", meta = (UIMin = 0, ClampMin = -1))
@@ -182,10 +238,18 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Botani|Weapon")
 	FBotaniRangedWeaponAmmoData GetAmmoStat(const FGameplayTag StatTag, bool& Success) const;
 
+	//~ Begin UBotaniWeaponMode Interface
+	virtual UBotaniAmmoDefinition* GetAmmoToConsume() const override;
+	//~ End UBotaniWeaponMode Interface
+
 public:
 	/** The stats for the weapon. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon", meta = (RowType = "/Script/BotaniGame.BotaniWeaponStatData"))
 	FDataTableRowHandle WeaponStats;
+
+	/** The reload ability used by the weapon. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	TSubclassOf<class UBotaniGameplayAbility_Reload> ReloadAbility;
 	
 	/** The fire method of the weapon. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Firing")
