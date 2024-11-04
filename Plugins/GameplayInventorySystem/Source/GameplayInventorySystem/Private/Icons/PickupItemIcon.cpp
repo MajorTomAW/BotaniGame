@@ -3,10 +3,6 @@
 
 #include "Icons/PickupItemIcon.h"
 
-#if WITH_EDITOR
-#include "UObject/ObjectSaveContext.h"
-#endif
-
 #include UE_INLINE_GENERATED_CPP_BY_NAME(PickupItemIcon)
 
 UPickupItemIcon::UPickupItemIcon(const FObjectInitializer& ObjectInitializer)
