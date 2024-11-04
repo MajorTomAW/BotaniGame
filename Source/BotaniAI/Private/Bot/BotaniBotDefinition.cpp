@@ -6,4 +6,7 @@
 UBotaniBotDefinition::UBotaniBotDefinition(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	bOverrideDefaultPawnData = false;
+	bInheritDefaultAbilities = true;
+	bInheritDefaultTagRelationshipMappings = true;
 }

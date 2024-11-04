@@ -3,8 +3,8 @@
 
 #include "Widgets/BotaniHUDLayout.h"
 
+#include "BotaniLogChannels.h"
 #include "CommonUIExtensions.h"
-#include "GameplayTags/BotaniGameplayTags.h"
 #include "GameplayTags/BotaniGameplayTags.h"
 #include "Input/CommonUIInputTypes.h"
 

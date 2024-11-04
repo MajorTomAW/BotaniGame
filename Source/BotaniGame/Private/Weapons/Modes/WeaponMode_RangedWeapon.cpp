@@ -3,6 +3,7 @@
 
 #include "Weapons/Modes/WeaponMode_RangedWeapon.h"
 
+#include "AbilitySystem/Abilities/BotaniGameplayAbility_Reload.h"
 #include "GameplayTags/BotaniGameplayTags.h"
 #include "Instance/GameplayInventoryItemInstance.h"
 #include "Inventory/Instances/BotaniWeaponEquipmentInstance.h"
@@ -12,6 +13,7 @@ UWeaponMode_RangedWeapon::UWeaponMode_RangedWeapon(const FObjectInitializer& Obj
 {
 	// Weapon Mode
 	WeaponModeTag = BotaniGameplayTags::Item::Weapon::Mode::TAG_WeaponMode_Ranged;
+	ReloadAbility = UBotaniGameplayAbility_Reload::StaticClass();
 	
 	// Magazine Size
 	{
@@ -69,6 +71,11 @@ FBotaniRangedWeaponAmmoData UWeaponMode_RangedWeapon::GetAmmoStat(const FGamepla
 
 	Success = false;
 	return FBotaniRangedWeaponAmmoData();
+}
+
+UBotaniAmmoDefinition* UWeaponMode_RangedWeapon::GetAmmoToConsume() const
+{
+	return AmmoType;
 }
 
 void UWeaponMode_RangedWeapon::OnModeActivated(

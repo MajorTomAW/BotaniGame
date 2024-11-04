@@ -7,14 +7,13 @@
 #include "Interfaces/InteractableTarget.h"
 #include "Tasks/AbilityTask_GrantNearbyInteraction.h"
 #include "InteractionOption.h"
-#include "InteractionQuery.h"
 #include "InteractionStatics.h"
 #include "NativeGameplayTags.h"
 #include "IndicatorSystem/BotaniIndicatorDescriptor.h"
 #include "IndicatorSystem/Components/BotaniIndicatorManagerComponent.h"
 #include "Player/BotaniPlayerController.h"
 
-UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Ability_Interaction_Activate, "Ability.Descriptor.Interaction.Activate");
+UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Ability_Interaction_Activate_ABILITY, "Ability.Descriptor.Interaction.Activate");
 
 UBotaniInteractionAbility::UBotaniInteractionAbility(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -92,7 +91,7 @@ void UBotaniInteractionAbility::TriggerInteraction()
 
 	// Allow the target to customize the event data, in case the ability needs custom data that only the actor knows
 	FGameplayEventData Payload;
-	Payload.EventTag = TAG_Ability_Interaction_Activate;
+	Payload.EventTag = TAG_Ability_Interaction_Activate_ABILITY;
 	Payload.Target = Interactable;
 	Payload.Instigator = Instigator;
 
@@ -101,7 +100,7 @@ void UBotaniInteractionAbility::TriggerInteraction()
 	 * a button on the wall may want to specify a door actor to execute the ability on.
 	 * So it might choose to override Target to be the door actor.
 	 */
-	Option.InteractableTarget->CustomizeInteractionEventData(TAG_Ability_Interaction_Activate, Payload);
+	Option.InteractableTarget->CustomizeInteractionEventData(TAG_Ability_Interaction_Activate_ABILITY, Payload);
 
 	// Target actor is the 'avatar' and the source Interactable is the owner actor.
 	AActor* TargetActor = const_cast<AActor*>(ToRawPtr(Payload.Target));
@@ -114,7 +113,7 @@ void UBotaniInteractionAbility::TriggerInteraction()
 	const bool bSuccess = Option.TargetAbilitySystem->TriggerAbilityFromGameplayEvent(
 		Option.TargetInteractionAbilityHandle,
 		&ActorInfo,
-		TAG_Ability_Interaction_Activate,
+		TAG_Ability_Interaction_Activate_ABILITY,
 		&Payload,
 		*Option.TargetAbilitySystem);
 }

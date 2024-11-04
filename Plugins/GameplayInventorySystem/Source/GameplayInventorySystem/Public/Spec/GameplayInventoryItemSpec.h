@@ -29,6 +29,8 @@ struct GAMEPLAYINVENTORYSYSTEM_API FGameplayInventoryItemSpec : public FFastArra
 
 	FGameplayInventoryItemSpec(UGameplayInventoryItemDefinition* InItemDef, int32 InStackCount, UObject* InSourceObject);
 
+	static FGameplayInventoryItemSpec FromContext(const FGameplayInventoryItemContext& InContext);
+
 public:
 	bool IsValid() const
 	{

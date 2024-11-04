@@ -78,6 +78,12 @@ namespace BotaniGameplayTags
 
 	namespace Ability
 	{
+		namespace Restrict
+		{
+			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityRestrict_Weapon_PrimaryFire);
+			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityRestrict_Weapon_SecondaryFire);
+		}
+		
 		namespace Behavior
 		{
 			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Ability_Behavior_SurvivesDeath);
@@ -92,6 +98,8 @@ namespace BotaniGameplayTags
 			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityActivationFail_TagsBlocked);
 			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityActivationFail_TagsMissing);
 			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityActivationFail_FatalError);
+			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityActivationFail_MagazineFull);
+			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityActivationFail_OutOfAmmo);
 		}
 
 		namespace Message
@@ -100,6 +108,14 @@ namespace BotaniGameplayTags
 			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Damage_Message);
 			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Healing_Message);
 			BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Ammo_Message);
+		}
+
+		namespace Descriptor
+		{
+			namespace Action
+			{
+				BOTANIGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AbilityAction_Reload);
+			}
 		}
 	}
 

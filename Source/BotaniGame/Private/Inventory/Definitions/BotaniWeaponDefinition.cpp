@@ -14,6 +14,7 @@
 UBotaniWeaponMode::UBotaniWeaponMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	
 }
 
 void UBotaniWeaponMode::OnModeActivated(APawn* Avatar, const UBotaniWeaponDefinition* InWeaponDef, UBotaniWeaponEquipmentInstance* InWeaponEquipmentInstance) const
@@ -51,6 +52,10 @@ void UBotaniWeaponMode::OnModeActivated(APawn* Avatar, const UBotaniWeaponDefini
 UBotaniWeaponDefinition::UBotaniWeaponDefinition(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if WITH_EDITORONLY_DATA
+	DefaultSubCategoryID = "Weapons";
+#endif
+	
 	bAllowSecondaryFireToInterruptPrimaryFire = false;
 	bAutoReload = true;
 	bADSPreventsReload = false;

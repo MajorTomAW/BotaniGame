@@ -7,13 +7,13 @@
 #include "NiagaraComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SphereComponent.h"
-#include "Inventory/BotaniInventoryStatics.h"
 #include "Inventory/Components/BotaniInventoryManager.h"
-#include "Inventory/Components/BotaniQuickBarComponent.h"
 #include "Inventory/Data/BotaniRarityStyleAsset.h"
 #include "Inventory/Definitions/BotaniInventoryItemDefinition.h"
-#include "Inventory/Instances/BotaniItemInstance.h"
 #include "System/BotaniAssetManager.h"
+#include "Inventory/BotaniInventoryStatics.h"
+#include "Inventory/Components/BotaniQuickBarComponent.h"
+#include "Instance/GameplayInventoryItemInstance.h"
 #include "Weapons/Components/BotaniProjectileMovementComponent.h"
 
 
@@ -124,6 +124,7 @@ void ABotaniPickupProxy::OnDropped(AActor* InInstigator, UGameplayInventoryItemD
 	Super::OnDropped(InInstigator, InItemDefinition, InPickupData);
 }
 
+#if WITH_EDITOR
 void ABotaniPickupProxy::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
@@ -171,6 +172,7 @@ void ABotaniPickupProxy::OnConstruction(const FTransform& Transform)
 		}
 	}
 }
+#endif
 
 void ABotaniPickupProxy::OnPickupCollisionBeginOverlap_Implementation(
 	UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -206,9 +208,10 @@ void ABotaniPickupProxy::OnPickupCollisionBeginOverlap_Implementation(
 	{
 		return;
 	}
+	
 
 	const FGameplayInventoryItemContext Context = InventoryManager->MakeItemContext(ItemDef, PickupQuantity, GetInstigator());
-	const FGameplayInventoryItemSpec NewSpec = FGameplayInventoryItemSpec(Context.ItemDefinition, Context.StackCount, Context.Instigator);
+	const FGameplayInventoryItemSpec NewSpec = FGameplayInventoryItemSpec::FromContext(Context);
 	
 	if (!InventoryManager->CanAddItemDef(NewSpec, Context))
 	{

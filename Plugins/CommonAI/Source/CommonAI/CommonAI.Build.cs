@@ -26,7 +26,7 @@ public class CommonAI : ModuleRules
 			new string[]
 			{
 				"Core",
-				// ... add other public dependencies that you statically link with here ...
+				"AIModule",
 			}
 			);
 			
@@ -38,7 +38,6 @@ public class CommonAI : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				// ... add private dependencies that you statically link with here ...	
 			}
 			);
 		

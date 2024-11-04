@@ -19,8 +19,8 @@
 #include "Player/BotaniPlayerState.h"
 #include "System/Components/BotaniSignificanceManager.h"
 
-static FName NAME_BotaniCharacterCollisionProfile_Capsule(TEXT("BotaniPawnCapsule"));
-static FName NAME_BotaniCharacterCollisionProfile_Mesh(TEXT("BotaniPawnMesh"));
+static FName NAME_BotaniCharacterCollisionProfile_Capsule(TEXT("Botani_PawnCapsule"));
+static FName NAME_BotaniCharacterCollisionProfile_Mesh(TEXT("Botani_PawnMesh"));
 
 ABotaniCharacter::ABotaniCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UBotaniMovementComponent>(ACharacter::CharacterMovementComponentName))

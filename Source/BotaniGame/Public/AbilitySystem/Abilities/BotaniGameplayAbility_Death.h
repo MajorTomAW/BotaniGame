@@ -13,7 +13,7 @@
  * Gameplay ability used for handling death.
  * Activates automatically via the "GameplayEvent.Death" ability trigger tag.
  */
-UCLASS(Abstract)
+UCLASS(Abstract, meta = (DisplayName = "Death Ability"))
 class UBotaniGameplayAbility_Death : public UBotaniGameplayAbility
 {
 	GENERATED_UCLASS_BODY()

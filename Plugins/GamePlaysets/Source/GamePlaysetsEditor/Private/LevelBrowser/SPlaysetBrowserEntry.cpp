@@ -3,6 +3,7 @@
 
 #include "SPlaysetBrowserEntry.h"
 
+#include "ContentBrowserMenuContexts.h"
 #include "Playset.h"
 #include "PlaysetEditorIDs.h"
 #include "SlateOptMacros.h"
@@ -175,7 +176,7 @@ FReply SPlaysetBrowserEntry::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 		return FReply::Handled().DetectDrag(SharedThis(this), MouseEvent.GetEffectingButton());
 	}
 	
-	return FReply::Unhandled();
+	return SCompoundWidget::OnMouseButtonDown(MyGeometry, MouseEvent);
 }
 
 FReply SPlaysetBrowserEntry::OnMouseButtonUp(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
@@ -186,18 +187,23 @@ FReply SPlaysetBrowserEntry::OnMouseButtonUp(const FGeometry& MyGeometry, const 
 		return FReply::Handled();
 	}
 
-	return FReply::Unhandled();
+	return SCompoundWidget::OnMouseButtonUp(MyGeometry, MouseEvent);
 }
 
 FReply SPlaysetBrowserEntry::OnMouseButtonDoubleClick(const FGeometry& InMyGeometry, const FPointerEvent& InMouseEvent)
 {
-	if (Item.IsValid())
+	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
 	{
-		UAssetEditorSubsystem* AssetEdSub = GEditor->GetEditorSubsystem<UAssetEditorSubsystem>();
-		AssetEdSub->OpenEditorForAsset(Item->AssetData.GetSoftObjectPath());
+		if (Item.IsValid())
+		{
+			UAssetEditorSubsystem* AssetEdSub = GEditor->GetEditorSubsystem<UAssetEditorSubsystem>();
+			AssetEdSub->OpenEditorForAsset(Item->AssetData.GetSoftObjectPath());
+
+			return FReply::Handled();
+		}
 	}
 	
-	return FReply::Handled();
+	return SCompoundWidget::OnMouseButtonDoubleClick(InMyGeometry, InMouseEvent);
 }
 
 FText SPlaysetBrowserEntry::GetNameText() const

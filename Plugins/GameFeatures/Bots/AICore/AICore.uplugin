@@ -38,6 +38,14 @@
 		{
 			"Name": "SebastianJunior",
 			"Enabled": true
+		},
+		{
+			"Name": "InventoryCore",
+			"Enabled": true
+		},
+		{
+			"Name": "BioTools",
+			"Enabled": true
 		}
 	]
 }
