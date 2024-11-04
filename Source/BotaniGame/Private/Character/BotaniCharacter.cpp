@@ -13,13 +13,14 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameplayTags/BotaniGameplayTags.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/BotaniPlayerController.h"
 #include "Player/BotaniPlayerState.h"
 #include "System/Components/BotaniSignificanceManager.h"
 
-static FName NAME_BotaniCharacterCollisionProfile_Capsule(TEXT("BotaniPawnCapsule"));
-static FName NAME_BotaniCharacterCollisionProfile_Mesh(TEXT("BotaniPawnMesh"));
+static FName NAME_BotaniCharacterCollisionProfile_Capsule(TEXT("Botani_PawnCapsule"));
+static FName NAME_BotaniCharacterCollisionProfile_Mesh(TEXT("Botani_PawnMesh"));
 
 ABotaniCharacter::ABotaniCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UBotaniMovementComponent>(ACharacter::CharacterMovementComponentName))

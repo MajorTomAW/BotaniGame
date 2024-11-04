@@ -58,6 +58,10 @@
 		{
 			"Name": "InteractionCore",
 			"Enabled": true
+		},
+		{
+			"Name": "SebastianJunior",
+			"Enabled": true
 		}
 	]
 }

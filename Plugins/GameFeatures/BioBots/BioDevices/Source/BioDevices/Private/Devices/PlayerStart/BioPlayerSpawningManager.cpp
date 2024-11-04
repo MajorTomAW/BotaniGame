@@ -115,5 +115,10 @@ AActor* UBioPlayerSpawningManager::DeterminePlayerStartSpot(AController* Player)
 	};
 
 	ValidPlayerStarts.Sort(SortByPriority);
-	return ValidPlayerStarts.Last();
+	if (ValidPlayerStarts.IsValidIndex(0))
+	{
+		return ValidPlayerStarts[0];
+	}
+	
+	return nullptr;
 }

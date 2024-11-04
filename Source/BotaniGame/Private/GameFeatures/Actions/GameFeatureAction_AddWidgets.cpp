@@ -152,7 +152,7 @@ void UGameFeatureAction_AddWidgets::AddWidgets(AActor* Actor, FPerContextData& A
 		{
 			if (TSubclassOf<UCommonActivatableWidget> ConcreteWidgetClass = Entry.LayoutClass.LoadSynchronous())
 			{
-				BOTANI_GFP_LOG(Warning, TEXT("Adding Layout: %s"), *ConcreteWidgetClass->GetName());
+				BOTANI_GFP_LOG(Display, TEXT("Adding Layout: %s"), *ConcreteWidgetClass->GetName());
 				ActorData.LayoutsAdded.Add(UCommonUIExtensions::PushContentToLayer_ForPlayer(LocalPlayer, Entry.LayerID, ConcreteWidgetClass));
 			}
 			else

@@ -138,6 +138,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "Equipment", meta = (DisplayName = "Actor Spawn Rule"))
 	TObjectPtr<UGameplayEquipmentActorToSpawnRule> ActorSpawnRule;
 
+	//@TODO: Saving the actor spawn rule in the equipment def directly it works fine, but adding it via the item it works but doenst save it.
+
 	/** The class of the equipment instance that is created when equipped */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment", meta = (DisplayName = "Override Equipment Instance"))
 	TSubclassOf<class UGameplayEquipmentInstance> EquipmentInstanceClass;

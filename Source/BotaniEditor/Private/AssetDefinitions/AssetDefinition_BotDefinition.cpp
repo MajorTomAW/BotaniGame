@@ -14,7 +14,7 @@ FText UAssetDefinition_BotDefinition::GetAssetDisplayName() const
 
 FLinearColor UAssetDefinition_BotDefinition::GetAssetColor() const
 {
-	return FLinearColor(FColor::FromHex("#0000ff"));
+	return FLinearColor(FColor::FromHex("#0444FF"));
 }
 
 TSoftClassPtr<UObject> UAssetDefinition_BotDefinition::GetAssetClass() const

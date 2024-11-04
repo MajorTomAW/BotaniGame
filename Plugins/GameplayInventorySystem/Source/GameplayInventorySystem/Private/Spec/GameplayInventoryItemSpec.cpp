@@ -44,6 +44,11 @@ FGameplayInventoryItemSpec::FGameplayInventoryItemSpec(UGameplayInventoryItemDef
 	Handle.GenerateNewHandle();
 }
 
+FGameplayInventoryItemSpec FGameplayInventoryItemSpec::FromContext(const FGameplayInventoryItemContext& InContext)
+{
+	return FGameplayInventoryItemSpec(InContext.ItemDefinition, InContext.StackCount, InContext.Instigator);
+}
+
 void FGameplayInventoryItemSpec::PostReplicatedAdd(const FGameplayInventoryItemContainer& InArraySerializer)
 {
 	if (InArraySerializer.OwnerComponent)
@@ -76,6 +81,16 @@ bool FGameplayInventoryItemSpec::IsStackFull() const
 int32 FGameplayInventoryItemSpec::GetMaxStackCount() const
 {
 	return Item->StackingData.MaxStackSize;
+}
+
+FGameplayInventoryItemContext FGameplayInventoryItemSpec::GetItemContext() const
+{
+	if (ensure(Instance))
+	{
+		return Instance->GetItemContext();
+	}
+
+	return FGameplayInventoryItemContext();
 }
 
 //////////////////////////////////////////////////////////////////////////

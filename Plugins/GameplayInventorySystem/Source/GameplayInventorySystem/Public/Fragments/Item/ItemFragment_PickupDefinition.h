@@ -94,6 +94,22 @@ enum class EInventoryItemDropBehavior : uint8
 };
 
 /**
+ * EBotaniItemDropFlags
+ *
+ * Bitflag enum to control how this item should behave in context of dropping.
+ */
+UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
+enum class EBotaniItemDropFlags : uint8
+{
+	None = 0 UMETA(Hidden),
+	DropCurrentItemOnOverflow = 1 << 0 UMETA(DisplayName = "Drop Current", ToolTip = "If the inventory is full, the current item will be dropped"),
+	DropExcessItemsOnOverflow = 1 << 1 UMETA(DisplayName = "Drop Excess", ToolTip = "If the inventory is full, excess items will be dropped"),
+	DropOnDeath = 1 << 2 UMETA(DisplayName = "On Death", ToolTip = "If the player dies, the item will be dropped"),
+	DropOnLogout = 1 << 3 UMETA(DisplayName = "On Logout", ToolTip = "If the player logs out, the item will be dropped"),
+	DropOnDBNO = 1 << 4 UMETA(DisplayName = "On DBNO", ToolTip = "If the player is downed, the item will be dropped"),
+};
+
+/**
  * FInventoryItemDropData
  *
  * Stores data about how an item should be dropped in the world.
@@ -111,6 +127,14 @@ public:
 	/** The chance that the item will be dropped */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Drop", meta = (ClampMin = "0.0", UIMin = "0.0", ClampMax = "100.0", UIMax = "100.0", ForceUnits = "%", EditCondition = "DropBehavior == EInventoryItemDropBehavior::ChanceDrop", EditConditionHides))
 	float DropChance = 100.f;
+
+	/** Determines if the item can be dropped from the inventory. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Drop")
+	uint32 bCanBeDroppedFromInventory : 1 = true;
+
+	/** The flags that control how the item should behave in context of dropping. */
+	UPROPERTY(EditDefaultsOnly, Category = "Drop", meta = (Bitmask, BitmaskEnum = "/Script/GameplayInventorySystem.EBotaniItemDropFlags", EditCondition = "bCanBeDroppedFromInventory"))
+	uint8 DropFlags = 0b00000111;
 };
 
 

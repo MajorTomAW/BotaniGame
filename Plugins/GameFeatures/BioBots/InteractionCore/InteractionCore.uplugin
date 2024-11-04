@@ -17,7 +17,7 @@
 	"Installed": false,
 	"ExplicitlyLoaded": true,
 	"BuiltInInitialFeatureState": "Registered",
-	"EditorCustomVirtualPath": "GameFeatures/BioGame/Interaction",
+	"EditorCustomVirtualPath": "GameFeatures/Interaction",
 	"Plugins": [
 		{
 			"Name": "GamePlaysets",
@@ -29,6 +29,14 @@
 		},
 		{
 			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayInventorySystem",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayTagStacks",
 			"Enabled": true
 		}
 	],

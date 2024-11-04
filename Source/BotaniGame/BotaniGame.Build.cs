@@ -39,6 +39,7 @@ public class BotaniGame : ModuleRules
             "GameplayTagStacks",
             "GamePlaysets",
             "AIModule",
+            "AIUtilities",
             "Niagara",
         });
         

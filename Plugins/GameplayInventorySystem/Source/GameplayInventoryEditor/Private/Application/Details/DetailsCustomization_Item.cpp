@@ -20,6 +20,8 @@ void FDetailsCustomization_Item::CustomizeDetails(IDetailLayoutBuilder& DetailBu
 	TArray<FString> FragmentCategories;
 	FragmentCategories.Add(TEXT("Fragments"));
 	FragmentCategories.Add(TEXT("ItemFragments"));
+	FragmentCategories.Add(TEXT("Weapon Modes"));
+	FragmentCategories.Add(TEXT("Weapon Mods"));
 	
 
 	TArray<FName> Categories;

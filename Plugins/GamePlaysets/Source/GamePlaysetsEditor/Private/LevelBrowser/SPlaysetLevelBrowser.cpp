@@ -135,6 +135,8 @@ void SPlaysetLevelBrowser::Construct(const FArguments& InArgs, TSharedRef<SDockT
 		]
 	];
 
+	InitContextMenu();
+
 	IGamePlaysetsEditorModule& PlaysetEdModule = IGamePlaysetsEditorModule::Get();
 	PlaysetEdModule.OnPlaysetBrowserCategoriesChanged().AddSP(this, &SPlaysetLevelBrowser::UpdateBrowserCategories);
 	PlaysetEdModule.OnPlaysetBrowserCategoryRefreshed().AddSP(this, &SPlaysetLevelBrowser::CategoryRefresh);
@@ -279,6 +281,27 @@ void SPlaysetLevelBrowser::UpdateItemSubCategories()
 		{
 			VirtualPaths.Add(MakeShared<FName>(Playset->GetDefaultSubCategoryID()));
 		}
+	}
+}
+
+void SPlaysetLevelBrowser::InitContextMenu()
+{
+	static FName MenuName("PlaysetAssetBrowser.ContextMenu");
+	if (!UToolMenus::Get()->IsMenuRegistered(MenuName))
+	{
+		UToolMenu* Menu = UToolMenus::Get()->RegisterMenu(MenuName);
+		FToolMenuSection& DefaultSection = Menu->AddSection("Default");
+
+		FToolMenuExecuteAction MenuAction = FToolMenuExecuteAction::CreateLambda([this](const FToolMenuContext& Context)
+		{
+			if (GEditor)
+			{
+				// GEditor->SyncBrowserToObject(Item->AssetData);
+			}
+		});
+
+		FToolUIActionChoice ActionChoice(MenuAction);
+		DefaultSection.AddEntry(FToolMenuEntry::InitMenuEntry("NavigateTo", LOCTEXT("NavigateTo", "Browser to Asset"), FText::GetEmpty(), FSlateIcon(), ActionChoice));
 	}
 }
 

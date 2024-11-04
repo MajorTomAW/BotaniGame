@@ -9,10 +9,10 @@
 /**
  * UGameplayInventoryDeveloperSettings
  */
-UCLASS(Config = Editor)
+UCLASS(Config = DefaultEditorPerProjectUserSettings)
 class GAMEPLAYINVENTORYEDITOR_API UGameplayInventoryDeveloperSettings : public UDeveloperSettings
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 
 public:
 	static UGameplayInventoryDeveloperSettings* Get()
@@ -39,4 +39,8 @@ public:
 	/** A keyword filter to apply to the class picker when selecting item definitions. */
 	UPROPERTY(EditDefaultsOnly, Category = "Editor", Config)
 	TArray<FName> KeywordFilter;
+
+	/** An item class filter used to filter out classes that are not item definitions. */
+	UPROPERTY(EditDefaultsOnly, Category = "Editor", Config)
+	TSet<TSubclassOf<UGameplayInventoryItemDefinition>> ItemClassFilter;
 };

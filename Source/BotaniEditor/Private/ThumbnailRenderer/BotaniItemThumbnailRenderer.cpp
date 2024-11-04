@@ -149,7 +149,7 @@ void UBotaniItemThumbnailRenderer::Draw(UObject* Object, int32 X, int32 Y, uint3
 			{
 				if (StyleInfo.ColorParameters.Contains("BackgroundColor") && UBotaniEditorSettings::Get()->ShouldRenderRarityBackground())
 				{
-					FCanvasTileItem BGTile(FVector2d(X, Y), RarityTexture->GetResource(), FVector2D(Width, Height), *StyleInfo.ColorParameters.Find("BackgroundColor"));
+					FCanvasTileItem BGTile(FVector2d(X, Y), RarityTexture->GetResource(), FVector2D(Width, Height), *StyleInfo.ColorParameters.Find("Color"));
 					BGTile.Draw(Canvas);
 				}
 				else

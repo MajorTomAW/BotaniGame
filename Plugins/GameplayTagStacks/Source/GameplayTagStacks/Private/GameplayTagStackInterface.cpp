@@ -37,7 +37,7 @@ void IGameplayTagStackInterface::AddGameplayTagStack(const FGameplayTag Tag, con
 	FGameplayTagStackContainer& MutableContainer = const_cast<FGameplayTagStackContainer&>(GetOwnedGameplayTagStacks());
 	MutableContainer.AddStack(Tag, StackCount);
 
-	UE_LOG(LogTemp, Error, TEXT("Adding stack %s with count %d"), *Tag.ToString(), StackCount);
+	// UE_LOG(LogTemp, Error, TEXT("Adding stack %s with count %d"), *Tag.ToString(), StackCount);
 }
 
 void IGameplayTagStackInterface::SetGameplayTagStack(FGameplayTag Tag, int32 StackCount)

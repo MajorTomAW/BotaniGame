@@ -3,6 +3,11 @@
 
 #include "GameplayInventoryDeveloperSettings.h"
 
+UGameplayInventoryDeveloperSettings::UGameplayInventoryDeveloperSettings(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
+
 FName UGameplayInventoryDeveloperSettings::GetCategoryName() const
 {
 	return FApp::GetProjectName();

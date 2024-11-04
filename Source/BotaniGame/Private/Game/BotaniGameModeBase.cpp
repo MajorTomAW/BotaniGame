@@ -58,14 +58,14 @@ const UBotaniPawnData* ABotaniGameModeBase::GetPawnDataForController(const ACont
 
 	if (!ExperienceManager->IsExperienceLoaded())
 	{
-		BOTANI_EXP_LOG(Error, TEXT("[%hs] called, before experience is loaded!"), __FUNCTION__);
+		BOTANI_EXP_LOG(Warning, TEXT("[%hs] called, before experience is loaded!"), __FUNCTION__);
 		return nullptr;
 	}
 
 	const UBotaniExperienceDefinition* Experience = ExperienceManager->GetCurrentExperienceChecked();
 	if (Experience->DefaultPawnData != nullptr)
 	{
-		BOTANI_EXP_LOG(Warning, TEXT("Found pawn data (%s) for controller [%s] in experience [%s]"), *Experience->DefaultPawnData->GetName(), *InController->GetName(), *Experience->GetName());
+		BOTANI_EXP_LOG(Display, TEXT("-------------------- Found pawn data (%s) for controller [%s] in experience [%s] --------------------"), *Experience->DefaultPawnData->GetName(), *InController->GetName(), *Experience->GetName());
 		return Experience->DefaultPawnData;
 	}
 
@@ -176,7 +176,10 @@ AActor* ABotaniGameModeBase::ChoosePlayerStart_Implementation(AController* Playe
 	
 	if (DeterminePlayerStartSpot.IsBound())
 	{
-		return DeterminePlayerStartSpot.Execute(Player);
+		if (AActor* PotStartSpot = DeterminePlayerStartSpot.Execute(Player))
+		{
+			return PotStartSpot;
+		}
 	}
 	
 	return Super::ChoosePlayerStart_Implementation(Player);

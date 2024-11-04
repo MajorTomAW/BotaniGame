@@ -7,6 +7,14 @@
 #include "Teams/BotaniTeamAgentInterface.h"
 #include "BotaniBotCoreController.generated.h"
 
+namespace EAIFocusPriority
+{
+	typedef uint8 Type;
+
+	/** Custom focus flag. */	
+	inline constexpr Type Custom = 3;
+}
+
 /**
  * ABotaniBotCoreController
  *
@@ -39,6 +47,10 @@ protected:
 	/** The perception component for this bot */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<UAIPerceptionComponent> BotPerceptionComponent;
+
+	/** The Utility Manager for this bot */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (DisplayName = "AI Utility Manager"))
+	TObjectPtr<class UAIUtilityManager> UtilityManager;
 
 private:
 	/** Delegate for when the player state changes team */

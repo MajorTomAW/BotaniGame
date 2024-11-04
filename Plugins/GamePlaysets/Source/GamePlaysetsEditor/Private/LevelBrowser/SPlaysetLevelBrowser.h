@@ -60,6 +60,8 @@ private:
 	void UpdateBrowserCategories();
 	void UpdateItemSubCategories();
 
+	void InitContextMenu();
+
 	void OnCategoryChanged(const ECheckBoxState NewState, FName InCategory);
 	ECheckBoxState GetPlaysetTabCheckedState(FName CategoryName) const;
 

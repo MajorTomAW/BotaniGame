@@ -314,9 +314,8 @@ void UBotaniQuickBarComponent::EquipItemInSlot()
 	if (UBotaniEquipmentManager* EquipmentManager = FindEquipmentManager())
 	{
 		EquippedItemHandle = SlotItem->GetItemSpecHandle();
-		
-		const FGameplayInventoryItemContext Context = UBotaniInventoryStatics::CreateItemContext(GetOwnerController(), SlotItem, EquippedItemHandle, SlotItem->GetCurrentStackCount());
-		EquipmentManager->EquipItemByHandle(EquippedItemHandle, Context);
+		//const FGameplayInventoryItemContext Context = UBotaniInventoryStatics::CreateItemContext(GetOwnerController(), SlotItem, EquippedItemHandle, SlotItem->GetCurrentStackCount());
+		EquipmentManager->EquipItemByHandle(EquippedItemHandle, SlotItem->GetItemContext());
 	}
 }
 

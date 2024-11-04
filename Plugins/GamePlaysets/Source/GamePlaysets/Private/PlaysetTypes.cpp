@@ -20,14 +20,9 @@ UTexture2D* FPlaysetDataList::GetThumbnailImage() const
 {
 	UTexture2D* ThumbnailImage = nullptr;
 	
-	if (!Icon.IsNull())
+	if (Icon != nullptr)
 	{
-		ThumbnailImage = Icon.Get();
-
-		if (ThumbnailImage == nullptr)
-		{
-			ThumbnailImage = Icon.LoadSynchronous();
-		}
+		ThumbnailImage = Icon;
 	}
 
 	if (!LargeIcon.IsNull() && ThumbnailImage == nullptr)

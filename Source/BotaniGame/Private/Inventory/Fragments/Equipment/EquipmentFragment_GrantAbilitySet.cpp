@@ -47,6 +47,32 @@ void UEquipmentFragment_GrantAbilitySet::OnEquipmentInstanceCreated(const FGamep
 		Set->GiveToAbilitySystem(BotaniASC, &GrantedHandles, EquipmentInstance);
 	}
 
+	// Apply the abilities to the owner
+	for (const TSoftClassPtr<UGameplayAbility>& AbilityClass : AbilitiesToGrant)
+	{
+		if (AbilityClass.IsNull())
+		{
+			continue;
+		}
+
+		FGameplayAbilitySpec NewSpec(AbilityClass.LoadSynchronous());
+		FGameplayAbilitySpecHandle Handle = BotaniASC->GiveAbility(NewSpec);
+		GrantedHandles.AddAbilitySpecHandle(Handle);
+	}
+
+	// Apply the effects to the owner
+	for (const TSoftClassPtr<UGameplayEffect>& EffectClass : EffectsToApply)
+	{
+		if (EffectClass.IsNull())
+		{
+			continue;
+		}
+
+		FGameplayEffectSpecHandle SpecHandle = BotaniASC->MakeOutgoingSpec(EffectClass.LoadSynchronous(), 1.0f, BotaniASC->MakeEffectContext());
+		FActiveGameplayEffectHandle Handle =  BotaniASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		GrantedHandles.AddGameplayEffectHandle(Handle);
+	}
+
 	FGameplayEquipmentGrantedHandles EquipmentGrantedHandles;
 	EquipmentGrantedHandles.AbilityHandles = GrantedHandles.GetAbilitySpecHandles();
 	EquipmentGrantedHandles.EffectHandles = GrantedHandles.GetGameplayEffectHandles();

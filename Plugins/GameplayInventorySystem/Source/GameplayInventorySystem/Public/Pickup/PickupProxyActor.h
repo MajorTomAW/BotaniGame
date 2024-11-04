@@ -48,11 +48,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category = "Pickup", meta = (ExposeOnSpawn = true, UIMin = 0, ClampMin = 0))
 	int32 PickupQuantity = 1;
 	
-protected:
 	/** Gets the item definition for this pickup. */
 	UFUNCTION(BlueprintCallable, Category = "Pickup")
 	GAMEPLAYINVENTORYSYSTEM_API UGameplayInventoryItemDefinition* GetItemDefinition() const;
-	
+
+protected:
 	/** Called when a player interacts with the pickup. */
 	UFUNCTION(BlueprintNativeEvent, Category = "Pickup")
 	GAMEPLAYINVENTORYSYSTEM_API void OnPickupCollisionBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

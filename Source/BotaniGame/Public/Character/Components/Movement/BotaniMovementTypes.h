@@ -93,6 +93,7 @@ public:
 
 	/** @note Non-safe flag. */
 	uint8 bWantsToWallRun	: 1;
+	uint8 bPrevWantsToCrouch : 1;
 
 public:
 	//~ Begin FSavedMove_Character Interface

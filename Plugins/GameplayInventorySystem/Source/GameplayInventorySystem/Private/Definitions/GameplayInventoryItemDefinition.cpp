@@ -4,19 +4,13 @@
 #include "Definitions/GameplayInventoryItemDefinition.h"
 
 #if WITH_EDITOR
-#include "UObject/ObjectSaveContext.h"
 #include "Misc/DataValidation.h"
 #endif
 
-#include "EngineUtils.h"
-#include "GameplayInventoryLogChannels.h"
 #include "Definitions/GameplayEquipmentDefinition.h"
 #include "Fragments/GameplayInventoryItemFragment.h"
-#include "Fragments/Item/ItemFragment_PickupDefinition.h"
 #include "Instance/GameplayInventoryItemInstance.h"
-#include "Pickup/PickupProxyActor.h"
 #include "Requirements/GameplayInventoryRequirement.h"
-#include "Subsystems/UnrealEditorSubsystem.h"
 
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameplayInventoryItemDefinition)
