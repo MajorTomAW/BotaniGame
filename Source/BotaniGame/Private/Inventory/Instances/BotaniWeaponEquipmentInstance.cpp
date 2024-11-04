@@ -3,7 +3,9 @@
 
 #include "Inventory/Instances/BotaniWeaponEquipmentInstance.h"
 
+#include "Character/Components/Movement/BotaniMovementComponent.h"
 #include "Inventory/Definitions/BotaniWeaponDefinition.h"
+#include "Weapons/Modes/WeaponMode_RangedWeapon.h"
 #include "Net/UnrealNetwork.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BotaniWeaponEquipmentInstance)
@@ -30,6 +32,7 @@ void UBotaniWeaponEquipmentInstance::OnEquipped(const FGameplayEquipmentSpec& Eq
 	UWorld* World = GetWorld();
 	check(World);
 	TimeLastEquipped = World->GetTimeSeconds();
+	JumpFallMultiplier = 1.f;
 
 	// Activate the first weapon mode possible
 	FGameplayTag FirstModeTag;
@@ -138,6 +141,59 @@ void UBotaniWeaponEquipmentInstance::CacheModeSpecificHandles(const FGameplayTag
 	GrantedModeHandles.Add(ModeTag, GrantedHandles);
 }
 
+void UBotaniWeaponEquipmentInstance::TickWeapon(float DeltaSeconds)
+{
+	APawn* Pawn = GetPawn();
+	check(Pawn);
+
+	UpdateSpread(DeltaSeconds);
+	UpdateSpreadMultipliers(DeltaSeconds);
+}
+
 void UBotaniWeaponEquipmentInstance::OnRep_ActiveWeaponMode(FGameplayTag OldWeaponMode)
 {
+}
+
+bool UBotaniWeaponEquipmentInstance::UpdateSpread(float DeltaSeconds)
+{
+	const float TimeSinceFired = GetWorld()->TimeSince(TimeLastFired);
+	return false;
+}
+
+bool UBotaniWeaponEquipmentInstance::UpdateSpreadMultipliers(float DeltaSeconds)
+{
+	constexpr float NearlyEqualThresh = 0.04f;
+
+	APawn* Pawn = GetPawn();
+	check(Pawn);
+	UBotaniMovementComponent* BotaniMovement = Cast<UBotaniMovementComponent>(Pawn->GetMovementComponent());
+	
+	FBotaniWeaponStatData Stats;
+	const UBotaniWeaponDefinition* WeaponDef = GetItemDefinition<UBotaniWeaponDefinition>();
+	if (!WeaponDef)
+	{
+		return false;
+	}
+	
+	if (const UWeaponMode_RangedWeapon* Mode = WeaponDef->GetWeaponMode<UWeaponMode_RangedWeapon>())
+	{
+		Stats = *Mode->WeaponStats.GetRow<FBotaniWeaponStatData>(TEXT(""));
+	}
+	else
+	{
+		return false;
+	}
+
+	const float CurrentSpeed = Pawn->GetVelocity().Size();
+
+	// See if we are in the air (jumping/falling), and if so, smoothly apply penalties
+	const bool bIsJumpingOrFalling = BotaniMovement && BotaniMovement->IsFalling();
+	const float JumpFallTargetValue = bIsJumpingOrFalling ? Stats.SpreadData.FallingSpreadMultiplier : 1.f;
+	JumpFallMultiplier = FMath::FInterpTo<float>(JumpFallMultiplier, JumpFallTargetValue, DeltaSeconds, 5.f);
+	const bool bJumpFallMultiplierIs1 = FMath::IsNearlyEqual(JumpFallMultiplier, 1.f, NearlyEqualThresh);
+
+	// Update the spread multiplier and combine all multipliers
+	CurrentSpreadMultiplier = JumpFallMultiplier;
+
+	return bJumpFallMultiplierIs1;
 }

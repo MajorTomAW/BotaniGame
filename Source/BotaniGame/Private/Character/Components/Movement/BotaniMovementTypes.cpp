@@ -18,6 +18,7 @@ FSavedMove_BotaniCharacter::FSavedMove_BotaniCharacter()
 
 	// Un-safe flags.
 	bWantsToWallRun = 0;
+	bPrevWantsToCrouch = 0;
 }
 
 void FSavedMove_BotaniCharacter::Clear()
@@ -28,6 +29,7 @@ void FSavedMove_BotaniCharacter::Clear()
 
 	// Un-safe flags.
 	bWantsToWallRun = 0;
+	bPrevWantsToCrouch = 0;
 	
 	FSavedMove_Character::Clear();
 }
@@ -49,6 +51,7 @@ void FSavedMove_BotaniCharacter::SetMoveFor(
 
 	// Un-safe flags.
 	bWantsToWallRun = BotaniCharacter->bWantsToWallRun;
+	bPrevWantsToCrouch = BotaniCharacter->GetBotaniMoveComp()->bPrevWantsToCrouch;
 }
 
 void FSavedMove_BotaniCharacter::PrepMoveFor(ACharacter* Character)
@@ -67,6 +70,7 @@ void FSavedMove_BotaniCharacter::PrepMoveFor(ACharacter* Character)
 
 	// Un-safe flags.
 	BotaniCharacter->bWantsToWallRun = bWantsToWallRun;
+	BotaniCharacter->GetBotaniMoveComp()->bPrevWantsToCrouch = bPrevWantsToCrouch;
 }
 
 uint8 FSavedMove_BotaniCharacter::GetCompressedFlags() const

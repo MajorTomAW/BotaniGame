@@ -368,13 +368,14 @@ void FGamePlaysetsEditorModule::ExecuteConvertToPlayset()
 	EPlaysetOffsetType OffsetType;
 	ConverterWindow->GetPlaysetInfo(DisplayInfo, DataList, OffsetType);
 
-	const FString PlaysetName = TEXT("PID_") + DisplayInfo.ItemName.ToString();
+	const FString PlaysetName = DisplayInfo.ItemName.IsEmpty() ? TEXT("NewPlayset") : DisplayInfo.ItemName.ToString();
+	const FString PrefixedPlaysetName = TEXT("PID_") + PlaysetName;
 	const FString PathName = FPaths::GetPath(ActiveAssets.Top().GetPackage()->GetPathName());
 
 	FSaveAssetDialogConfig SaveConfig;
 	SaveConfig.DialogTitleOverride = LOCTEXT("SavePlaysetDialogTitle", "Save Playset");
-	SaveConfig.DefaultPath = FPaths::Combine(UPlaysetDeveloperSettings::Get()->DefaultPlaysetDirectory.Path, PlaysetName);
-	SaveConfig.DefaultAssetName = PlaysetName;
+	SaveConfig.DefaultPath = FPaths::Combine(UPlaysetDeveloperSettings::Get()->DefaultPlaysetDirectory.Path, PrefixedPlaysetName);
+	SaveConfig.DefaultAssetName = PrefixedPlaysetName;
 	SaveConfig.ExistingAssetPolicy = ESaveAssetDialogExistingAssetPolicy::Disallow;
 
 	const FContentBrowserModule& ContentBrowserModule = FModuleManager::LoadModuleChecked<FContentBrowserModule>("ContentBrowser");

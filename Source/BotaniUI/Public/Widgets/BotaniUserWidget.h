@@ -7,10 +7,25 @@
 #include "BotaniUserWidget.generated.h"
 
 /**
- * 
+ * UBotaniUserWidget
+ *
+ * Common widget class that contains botani-specific functionality. 
  */
-UCLASS()
+UCLASS(Abstract)
 class BOTANIUI_API UBotaniUserWidget : public UUserWidget
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
+
+public:
+	/** Returns the botani player controller. */
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "Player")
+	class ABotaniPlayerController* GetOwningBotaniPlayer() const;
+
+	/** Returns the botani character. */
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "Player")
+	class ABotaniCharacter* GetOwningBotaniCharacter() const;
+
+	/** Returns the botani local player. */
+	UFUNCTION(BlueprintCallable, BlueprintCosmetic, Category = "Player")
+	class UBotaniLocalPlayer* GetOwningBotaniLocalPlayer() const;
 };

@@ -59,13 +59,33 @@ public:
 	GAMEPLAYINVENTORYSYSTEM_API virtual void OnInstanceChanged(const FGameplayInventoryItemSpecHandle& InHandle, const FGameplayInventoryItemContext* InItemContext = nullptr);
 
 public:
+	/** Returns the current context of this item instance */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
+	GAMEPLAYINVENTORYSYSTEM_API virtual FGameplayInventoryItemContext GetItemContext() const;
+	
 	/** Returns the stack count of this instance in the inventory */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
 	GAMEPLAYINVENTORYSYSTEM_API virtual int32 GetCurrentStackCount() const;
 
+	/** Returns the display name of the item. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
+	GAMEPLAYINVENTORYSYSTEM_API FText GetDisplayName() const;
+
+	/** returns the item icons for this instance */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
+	GAMEPLAYINVENTORYSYSTEM_API UTexture2D* GetIcon(const bool bUseLargeIfNotFound = true) const;
+
+	/** Returns the gameplay tags owned by the item definition */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
+	GAMEPLAYINVENTORYSYSTEM_API FGameplayTagContainer GetConstGameplayTags() const;
+
 	/** Returns the item definition associated with this instance */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")
 	GAMEPLAYINVENTORYSYSTEM_API virtual UGameplayInventoryItemDefinition* GetItemDefinition() const { return ItemDefinition; }
+
+	/** Returns the typed item definition associated with this instance */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item", meta = (DeterminesOutputType = "ItemDefinitionType"))
+	GAMEPLAYINVENTORYSYSTEM_API virtual UGameplayInventoryItemDefinition* GetItemDefinitionByType(TSubclassOf<UGameplayInventoryItemDefinition> ItemDefinitionType) const;
 
 	/** Returns the owner actor of this item instance */
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Inventory|Item")

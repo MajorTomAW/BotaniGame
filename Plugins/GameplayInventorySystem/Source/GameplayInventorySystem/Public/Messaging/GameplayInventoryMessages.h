@@ -68,8 +68,8 @@ inline FGameplayInventoryChangeMessage::FGameplayInventoryChangeMessage(UGamepla
 	OldStackCount = InOldCount;
 	Delta = InNewCount - InOldCount;
 	ItemInstance = InInstance;
-	InventoryManager = InInstance->GetOwnerComponent<UGameplayInventoryComponent>();
-	InventoryOwner = InventoryManager->GetOwner();
+	InventoryManager = InInstance ? InInstance->GetOwnerComponent<UGameplayInventoryComponent>() : nullptr;
+	InventoryOwner = InventoryManager ? InventoryManager->GetOwner() : nullptr;
 
 	if (AController* Controller = Cast<AController>(InventoryOwner))
 	{

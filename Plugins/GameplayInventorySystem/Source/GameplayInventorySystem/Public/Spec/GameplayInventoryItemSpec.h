@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameplayInventoryItemSpecHandle.h"
+#include "GameplayInventoryTypes.h"
 #include "GameplayTagContainer.h"
 #include "Net/Serialization/FastArraySerializer.h"
 
@@ -59,8 +60,15 @@ public:
 
 	/** Returns the item instance */
 	UGameplayInventoryItemInstance* GetInstance() const { return Instance; }
+
+	/** Returns the item definition cached inside this spec */
 	UGameplayInventoryItemDefinition* GetItemDefinition() const { return Item; }
+
+	/** Returns the unique handle to this item spec. */
 	FGameplayInventoryItemSpecHandle GetHandle() const { return Handle; }
+
+	/** Returns the context of this item spec */
+	FGameplayInventoryItemContext GetItemContext() const;
 
 	/** Returns the item definition as the specified type */
 	template <typename T>

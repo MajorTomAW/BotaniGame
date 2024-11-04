@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BotaniItemInstance.h"
 #include "AbilitySystem/BotaniAbilitySet.h"
+#include "AbilitySystem/BotaniAbilitySourceInterface.h"
 #include "BotaniWeaponItemInstance.generated.h"
 
 /**
@@ -13,9 +14,15 @@
  * A virtual instance of a weapon item.
  */
 UCLASS()
-class BOTANIGAME_API UBotaniWeaponItemInstance : public UBotaniItemInstance
+class BOTANIGAME_API UBotaniWeaponItemInstance : public UBotaniItemInstance, public IBotaniAbilitySourceInterface
 {
 	GENERATED_UCLASS_BODY()
+
+public:
+	//~ Begin IBotaniAbilitySourceInterface Interface
+	virtual float GetDistanceAttenuation(float Distance, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags) const override;
+	virtual float GetPhysicalMaterialAttenuation(const UPhysicalMaterial* PhysicalMaterial, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags) const override;
+	//~ End IBotaniAbilitySourceInterface Interface
 
 public:
 	//~ Begin UBotaniItemInstance Interface

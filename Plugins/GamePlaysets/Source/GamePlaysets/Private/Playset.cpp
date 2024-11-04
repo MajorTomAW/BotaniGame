@@ -67,11 +67,16 @@ FVector UPlayset::GetPlaysetLocationOffset() const
 
 UTexture2D* UPlayset::GetIcon(const bool bUseLargeIfNotFound) const
 {
-	UTexture2D* Icon = DataList.Icon.Get();
+	UTexture2D* Icon = DataList.Icon;
 
-	if (Icon == nullptr)
+	if (Icon == nullptr && bUseLargeIfNotFound)
 	{
 		Icon = DataList.LargeIcon.Get();
+
+		if (Icon == nullptr)
+		{
+			Icon = DataList.LargeIcon.LoadSynchronous();
+		}
 	}
 
 	return Icon;

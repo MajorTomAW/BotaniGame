@@ -4,6 +4,7 @@
 #include "Components/GameplayInventoryComponent.h"
 
 #include "GameplayInventoryTypes.h"
+#include "GameFramework/PlayerState.h"
 
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GameplayInventoryComponent)
@@ -24,4 +25,24 @@ bool UGameplayInventoryComponent::IsOwnerActorAuthoritative() const
 	}
 
 	return Owner->HasAuthority();
+}
+
+APawn* UGameplayInventoryComponent::GetOwnerPawn() const
+{
+	if (APawn* Pawn = GetOwner<APawn>())
+	{
+		return Pawn;
+	}
+
+	if (AController* Controller = GetOwner<AController>())
+	{
+		return Controller->GetPawn();
+	}
+
+	if (APlayerState* PlayerState = GetOwner<APlayerState>())
+	{
+		return PlayerState->GetPawn();
+	}
+
+	return nullptr;
 }

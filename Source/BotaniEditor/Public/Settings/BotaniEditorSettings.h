@@ -11,7 +11,7 @@ class UBotaniGameplayAbility;
 /**
  * Settings for the Botani Editor environment.
  */
-UCLASS(DisplayName = "Botani Editor Settings", Config = Editor, MinimalAPI)
+UCLASS(DisplayName = "Botani Editor Settings", Config = DefaultEditorPerProjectUserSettings, MinimalAPI)
 class UBotaniEditorSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()

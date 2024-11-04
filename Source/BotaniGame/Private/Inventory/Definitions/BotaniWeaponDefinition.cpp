@@ -116,7 +116,7 @@ const UBotaniWeaponMode* UBotaniWeaponDefinition::FindWeaponMode(
 
 const UBotaniWeaponMode* UBotaniWeaponDefinition::GetWeaponMode(const TSubclassOf<UBotaniWeaponMode> ModeClass) const
 {
-	for (const auto& Mode : WeaponModes)
+	for (const UBotaniWeaponMode* Mode : WeaponModes)
 	{
 		if (Mode == nullptr)
 		{

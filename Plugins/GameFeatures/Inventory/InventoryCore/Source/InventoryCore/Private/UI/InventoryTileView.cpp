@@ -46,7 +46,7 @@ void UInventoryTileView::AddInitialEntries()
 {
 	check(InventoryManager);
 
-	constexpr int32 NumEntries = 5;
+	constexpr int32 NumEntries = 8;
 	
 	for (int i = 0; i < NumEntries; i++)
 	{

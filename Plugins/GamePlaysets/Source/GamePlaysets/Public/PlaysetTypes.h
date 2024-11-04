@@ -81,7 +81,7 @@ public:
 
 	/** The icon of the playset. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Playset")
-	TSoftObjectPtr<UTexture2D> Icon;
+	TObjectPtr<UTexture2D> Icon;
 
 	/** The large icon of the playset. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Playset")

@@ -407,7 +407,15 @@
 		{
 			"Name": "VaazTower",
 			"Enabled": true
-		}
+		},
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true
+		},
+    {
+      "Name": "AIUtilities",
+      "Enabled": true
+    }
 	],
 	"TargetPlatforms": [
 		"Windows"

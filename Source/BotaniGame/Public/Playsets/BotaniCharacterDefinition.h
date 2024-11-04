@@ -91,6 +91,10 @@ public:
 	/** The relevancy of this cosmetic. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cosmetic")
 	EBotaniCharacterCosmeticRelevancy Relevancy = EBotaniCharacterCosmeticRelevancy::Both;
+
+	/** List of custom color parameters. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cosmetic")
+	TMap<FName, FLinearColor> ColorParameters;
 	
 	/** The base skeletal mesh of the character. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cosmetic|Base", meta = (EditCondition = "Relevancy != EBotaniCharacterCosmeticRelevancy::FirstPerson", EditConditionHides))

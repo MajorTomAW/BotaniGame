@@ -17,7 +17,7 @@ class BOTANIUI_API UBotaniReticleWidget : public UCommonUserWidget
 	GENERATED_UCLASS_BODY()
 
 public:
-	/** Called when the weapon instance is initialized and both WeaponInstance and InventoryInstance are set */
+	/** Called when the weapon instance is initialized and both WeaponEquipmentInstance and InventoryInstance are set */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Weapon", meta = (DisplayName = "On Weapon Initialized"))
 	void OnWeaponInitialized_BP();
 
@@ -37,6 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void RestartFadeTimer();
 
+	/** Returns the current weapon's diametrical spread in angle (in degrees) */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Weapon")
+	float ComputeSpreadAngle() const;
+
 public:
 	//~ Begin UUserWidget interface
 	virtual void NativeConstruct() override;
@@ -51,7 +55,7 @@ protected:
 	
 	/** The weapon instance associated with this reticle */
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
-	TObjectPtr<class UBotaniWeaponEquipmentInstance> WeaponInstance;
+	TObjectPtr<class UBotaniWeaponEquipmentInstance> WeaponEquipmentInstance;
 
 	/** The inventory item instance associated with this reticle */
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")

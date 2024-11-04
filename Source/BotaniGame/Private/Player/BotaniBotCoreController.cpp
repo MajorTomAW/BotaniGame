@@ -8,6 +8,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "BotaniLogChannels.h"
+#include "Components/AIUtilityManager.h"
 #include "Game/BotaniGameModeBase.h"
 #include "Perception/AIPerceptionComponent.h"
 
@@ -20,6 +21,9 @@ ABotaniBotCoreController::ABotaniBotCoreController(const FObjectInitializer& Obj
 
 	BotPerceptionComponent = ObjectInitializer.CreateDefaultSubobject<UAIPerceptionComponent>(this, TEXT("AIPerceptionComponent"));
 	BotPerceptionComponent->SetAutoActivate(true);
+
+	UtilityManager = ObjectInitializer.CreateDefaultSubobject<UAIUtilityManager>(this, TEXT("AIUtilityManager"));
+	UtilityManager->SetAutoActivate(true);
 }
 
 void ABotaniBotCoreController::SetGenericTeamId(const FGenericTeamId& NewTeamID)
@@ -112,7 +116,7 @@ void ABotaniBotCoreController::ServerRestartController()
 			return;
 		}
 
-		// If we are still attached to a pawn, leave it
+		// If we're still attached to a pawn, leave it
 		if (GetPawn() != nullptr)
 		{
 			UnPossess();
