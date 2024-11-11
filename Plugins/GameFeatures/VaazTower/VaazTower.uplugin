@@ -59,6 +59,14 @@
 		{
 			"Name": "BioDevice_AISpawner",
 			"Enabled": true
+		},
+		{
+			"Name": "InventoryCore",
+			"Enabled": true
+		},
+		{
+			"Name": "InteractionCore",
+			"Enabled": true
 		}
 	]
 }
