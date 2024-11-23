@@ -69,7 +69,7 @@ FText UBlueprintFactory_InventoryFragment::GetDisplayName() const
 
 UObject* UBlueprintFactory_InventoryFragment::FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn, FName CallingContext)
 {
-	UClass* ClassToUse = SelectedFragmentClass ? SelectedFragmentClass : FragmentClass;
+	UClass* ClassToUse = SelectedFragmentClass ? SelectedFragmentClass.Get() : FragmentClass;
 
 	if (ClassToUse == nullptr && !FKismetEditorUtilities::CanCreateBlueprintOfClass(ClassToUse))
 	{

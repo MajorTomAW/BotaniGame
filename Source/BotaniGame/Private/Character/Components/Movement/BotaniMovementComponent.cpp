@@ -395,14 +395,14 @@ bool UBotaniMovementComponent::CanAttemptJump() const
 	return Result;
 }
 
-bool UBotaniMovementComponent::DoJump(bool bReplayingMoves)
+bool UBotaniMovementComponent::DoJump(bool bReplayingMoves, float DeltaTime)
 {
 	if (IsValid(BotaniCharacterOwner) && (BotaniCharacterOwner->IsWallRunning()))
 	{
-		return DoWallJump(bReplayingMoves);
+		return DoWallJump(bReplayingMoves, DeltaTime);
 	}
 	
-	return Super::DoJump(bReplayingMoves);
+	return Super::DoJump(bReplayingMoves, DeltaTime);
 }
 
 void UBotaniMovementComponent::PhysFlying(float deltaTime, int32 Iterations)
@@ -584,7 +584,7 @@ void UBotaniMovementComponent::PhysSlide(float deltaTime, int32 Iterations)
 		{
 			// Calculate the possible alternate movement
 			const FVector GravDir = FVector(0.f, 0.f, -1.f);
-			const FVector NewDelta = bTriedLedgeMove ? FVector::ZeroVector : GetLedgeMove(OldLocation, Delta, GravDir);
+			const FVector NewDelta = bTriedLedgeMove ? FVector::ZeroVector : GetLedgeMove(OldLocation, Delta, OldFloor);
 
 			if (!NewDelta.IsZero())
 			{
@@ -1247,7 +1247,7 @@ bool UBotaniMovementComponent::ExitWallRunning()
 	return true;
 }
 
-bool UBotaniMovementComponent::DoWallJump(bool bReplayingMoves)
+bool UBotaniMovementComponent::DoWallJump(bool bReplayingMoves, float DeltaTime)
 {
 	if (!IsValid(BotaniCharacterOwner))
 	{

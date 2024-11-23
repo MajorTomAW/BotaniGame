@@ -27,18 +27,18 @@ FAIRequestID UBotaniPathFollowingComponent::RequestMove(const FAIMoveRequest& Re
 
 void UBotaniPathFollowingComponent::FollowPathSegment(float DeltaTime)
 {
-	if (!Path.IsValid() || MovementComp == nullptr)
+	if (!Path.IsValid() || NavMovementInterface == nullptr)
 	{
 		return;
 	}
 
-	const FVector CurrentLocation = MovementComp->GetActorFeetLocation();
+	const FVector CurrentLocation = NavMovementInterface->GetFeetLocation();
 	const FVector CurrentTarget = GetCurrentTargetLocation();
 	
 	// set to false by default, we will set this back to true if appropriate
 	bIsDecelerating = false;
 
-	const bool bAccelerationBased = MovementComp->UseAccelerationForPathFollowing();
+	const bool bAccelerationBased = NavMovementInterface->UseAccelerationForPathFollowing();
 	if (bAccelerationBased)
 	{
 		CurrentMoveInput = (CurrentTarget - CurrentLocation).GetSafeNormal();
@@ -58,7 +58,7 @@ void UBotaniPathFollowingComponent::FollowPathSegment(float DeltaTime)
 		}
 
 		PostProcessMove.ExecuteIfBound(this, CurrentMoveInput);
-		MovementComp->RequestPathMove(CurrentMoveInput);
+		NavMovementInterface->RequestPathMove(CurrentMoveInput);
 	}
 	else
 	{
@@ -68,6 +68,6 @@ void UBotaniPathFollowingComponent::FollowPathSegment(float DeltaTime)
 		const bool bNotFollowingLastSegment = (MoveSegmentStartIndex < LastSegmentStartIndex);
 
 		PostProcessMove.ExecuteIfBound(this, MoveVelocity);
-		MovementComp->RequestDirectMove(MoveVelocity, bNotFollowingLastSegment);
+		NavMovementInterface->RequestDirectMove(MoveVelocity, bNotFollowingLastSegment);
 	}
 }

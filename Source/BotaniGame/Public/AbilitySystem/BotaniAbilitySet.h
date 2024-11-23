@@ -107,7 +107,7 @@ protected:
 
 	/** Granted attribute sets. */
 	UPROPERTY()
-	TArray<UAttributeSet*> GrantedAttributeSets;
+	TArray<TObjectPtr<UAttributeSet>> GrantedAttributeSets;
 };
 
 

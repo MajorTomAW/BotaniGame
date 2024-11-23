@@ -21,7 +21,7 @@ protected:
 	UClass* FragmentClass;
 
 	UPROPERTY()
-	UClass* SelectedFragmentClass = nullptr;
+	TObjectPtr<UClass> SelectedFragmentClass = nullptr;
 };
 
 
