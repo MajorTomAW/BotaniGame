@@ -417,13 +417,13 @@
 			"Enabled": true
 		},
 		{
+			"Name": "GizmoHelperTool",
+			"Enabled": true,
+			"MarketplaceURL": "https://gameshiftersstudio.itch.io/gizmohelper"
+		},
+		{
 			"Name": "Fab",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"Linux"
-			]
+			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [
