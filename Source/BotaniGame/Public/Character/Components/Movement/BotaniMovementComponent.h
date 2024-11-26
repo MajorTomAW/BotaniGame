@@ -38,7 +38,7 @@ public:
 	virtual bool CanCrouchInCurrentState() const override;
 
 	virtual bool CanAttemptJump() const override;
-	virtual bool DoJump(bool bReplayingMoves) override;
+	virtual bool DoJump(bool bReplayingMoves, float DeltaTime) override;
 
 	virtual void PhysFlying(float deltaTime, int32 Iterations) override;
 
@@ -61,7 +61,7 @@ public:
 protected:
 	/** Pointer to the botani character owner. */
 	UPROPERTY(Transient)
-	class ABotaniCharacter* BotaniCharacterOwner;
+	TObjectPtr<ABotaniCharacter> BotaniCharacterOwner;
 
 protected:
 	/** Tags that block moving when present on the character. */
@@ -86,7 +86,7 @@ protected:
 	virtual bool ExitWallRunning();
 
 	/** Performs the wall jump. */ 
-	virtual bool DoWallJump(bool bReplayingMoves);
+	virtual bool DoWallJump(bool bReplayingMoves, float DeltaTime);
 
 	/**
 	 * Determines which side of the wall is relatively to the velocity given by the normal.

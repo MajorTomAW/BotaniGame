@@ -10,7 +10,7 @@
 	"DocsURL": "https://github.com/Ares9323/Restart-Unreal-Engine-Editor-Plugin",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/a00eb1e478ae4a8fb655aa22f9125b07",
 	"SupportURL": "",
-	"EngineVersion": "5.4.0",
+	"EngineVersion": "5.5.0",
 	"CanContainContent": false,
 	"Installed": true,
 	"Modules": [

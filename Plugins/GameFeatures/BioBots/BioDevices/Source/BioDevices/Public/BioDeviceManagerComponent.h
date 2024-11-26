@@ -85,5 +85,5 @@ protected:
 private:
 	/** The device that owns this manager */
 	UPROPERTY()
-	UObject* Device;
+	TObjectPtr<UObject> Device;
 };

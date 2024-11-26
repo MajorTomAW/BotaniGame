@@ -39,14 +39,12 @@ bool UActorFactory_InventoryItem::CanCreateActorFrom(const FAssetData& AssetData
 	if (!ItemDef)
 	{
 		OutErrorMsg = NSLOCTEXT("GameplayInventory", "CanCreateActorFrom_NoItemDef", "No Inventory Item Definition was specified.");
-		UE_LOG(LogTemp, Error, TEXT("%s"), *OutErrorMsg.ToString());
 		return false;
 	}
 
 	if (!ItemDef->GetItemFragment<UItemFragment_PickupDefinition>())
 	{
 		OutErrorMsg = NSLOCTEXT("GameplayInventory", "CanCreateActorFrom_NoPickupDef", "The Inventory Item Definition does not have a Pickup Definition.");
-		UE_LOG(LogTemp, Error, TEXT("%s"), *OutErrorMsg.ToString());
 		return false;
 	}
 

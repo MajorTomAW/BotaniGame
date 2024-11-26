@@ -123,7 +123,7 @@ public:
 
 	/** The QuickBar component */
 	UPROPERTY(BlueprintReadOnly, Category = "Botani|Quick Bar")
-	UBotaniQuickBarComponent* QuickBar = nullptr;
+	TObjectPtr<UBotaniQuickBarComponent> QuickBar = nullptr;
 
 	/** The slots in the quick bar */
 	UPROPERTY(BlueprintReadOnly, Category = "Botani|Quick Bar")

@@ -80,6 +80,8 @@ void UUIExtensionSubsystem::AddReferencedObjects(UObject* InThis, FReferenceColl
 			}
 		}
 	}
+
+	Super::AddReferencedObjects(InThis, Collector);
 }
 
 void UUIExtensionSubsystem::Initialize(FSubsystemCollectionBase& Collection)

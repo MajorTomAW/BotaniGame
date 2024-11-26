@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.4",
+	"EngineAssociation": "5.5",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -417,13 +417,13 @@
 			"Enabled": true
 		},
 		{
+			"Name": "GizmoHelperTool",
+			"Enabled": true,
+			"MarketplaceURL": "https://gameshiftersstudio.itch.io/gizmohelper"
+		},
+		{
 			"Name": "Fab",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"Linux"
-			]
+			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [

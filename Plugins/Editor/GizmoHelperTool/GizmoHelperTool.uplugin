@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.3",
+	"FriendlyName": "Gizmo Helper Tool",
+	"Description": "Make Assets move to your cursor with ease!",
+	"Category": "Editor",
+	"CreatedBy": "Game Shifters Studio",
+	"CreatedByURL": "https://gameshiftersstudio.itch.io/gizmohelper",
+	"DocsURL": "https://gameshiftersstudio.itch.io/gizmohelper",
+	"MarketplaceURL": "https://gameshiftersstudio.itch.io/gizmohelper",
+	"SupportURL": "mailto:shop@gizmohelper.studio",
+	"EnabledByDefault" : false,
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "GizmoHelperTool",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
