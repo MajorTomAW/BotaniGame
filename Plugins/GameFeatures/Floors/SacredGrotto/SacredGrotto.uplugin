@@ -1,0 +1,55 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Sacred Grotto",
+	"Description": "",
+	"Category": "Game Features",
+	"CreatedBy": "Kjell",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": true,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"ExplicitlyLoaded": true,
+	"BuiltInInitialFeatureState": "Registered",
+	"EditorCustomVirtualPath": "GameFeatures/Alpha",
+	"Plugins": [
+		{
+			"Name": "BioGame",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevices",
+			"Enabled": true
+		},
+		{
+			"Name": "BioFrontend",
+			"Enabled": true
+		},
+		{
+			"Name": "BioWeapons",
+			"Enabled": true
+		},
+		{
+			"Name": "PrototypeAssets",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_PlayerStart",
+			"Enabled": true
+		},
+		{
+			"Name": "BioDevice_AISpawner",
+			"Enabled": true
+		},
+		{
+			"Name": "BioTools",
+			"Enabled": true
+		}
+	]
+}
