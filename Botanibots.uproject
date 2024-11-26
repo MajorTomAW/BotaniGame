@@ -418,7 +418,7 @@
 		},
 		{
 			"Name": "GizmoHelperTool",
-			"Enabled": true,
+			"Enabled": false,
 			"MarketplaceURL": "https://gameshiftersstudio.itch.io/gizmohelper"
 		},
 		{
